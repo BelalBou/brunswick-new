@@ -19,6 +19,7 @@ import menuSizeReducer from "./slices/menuSizeSlice";
 import orderReducer from "./slices/orderSlice";
 import serverTimeReducer from "./slices/serverTimeSlice";
 import settingReducer from "./slices/settingSlice";
+import supplierReducer from "./slices/supplierSlice";
 
 const store = configureStore({
   reducer: {
@@ -40,6 +41,7 @@ const store = configureStore({
     order: orderReducer,
     serverTime: serverTimeReducer,
     setting: settingReducer,
+    supplier: supplierReducer,
   }
 });
 
