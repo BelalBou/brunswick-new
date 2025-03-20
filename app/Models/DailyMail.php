@@ -3,29 +3,25 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class MenuSize extends Model
+class DailyMail extends Model
 {
-    protected $table = 'menu_sizes';
+    protected $table = 'daily_mails';
 
     protected $fillable = [
-        'title',
-        'title_en',
+        'date',
+        'sent',
+        'error',
         'deleted',
         'created_at',
         'updated_at'
     ];
 
     protected $casts = [
+        'date' => 'datetime',
+        'sent' => 'boolean',
         'deleted' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
-
-    // Relations
-    public function menus(): HasMany
-    {
-        return $this->hasMany(Menu::class);
-    }
 } 

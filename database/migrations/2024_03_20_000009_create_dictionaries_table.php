@@ -10,9 +10,10 @@ return new class extends Migration
     {
         Schema::create('dictionaries', function (Blueprint $table) {
             $table->id();
-            $table->string('key')->unique();
-            $table->text('value_fr');
-            $table->text('value_en')->nullable();
+            $table->string('tag')->unique()->nullable(false);
+            $table->string('translation_fr')->nullable(false);
+            $table->string('translation_en')->nullable(false);
+            $table->boolean('deleted')->default(false)->nullable(false);
             $table->timestamps();
         });
     }
