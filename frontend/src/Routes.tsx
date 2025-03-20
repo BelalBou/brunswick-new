@@ -4,7 +4,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
 // Vos imports de containers
-// import App from "./containers/AppContainer";
+import App from "./containers/AppContainer";
 // import Login from "./containers/LoginContainer";
 // import Menus from "./containers/MenusContainer";
 // import Cart from "./containers/CartContainer";
