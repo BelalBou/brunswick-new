@@ -9,18 +9,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Order extends Model
 {
     protected $fillable = [
+        'date',
+        'deleted',
+        'email_send',
         'user_id',
-        'supplier_id',
-        'menu_id',
-        'status',
-        'total_price',
-        'notes',
         'created_at',
         'updated_at'
     ];
 
     protected $casts = [
-        'total_price' => 'decimal:2',
+        'date' => 'date',
+        'deleted' => 'boolean',
+        'email_send' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
@@ -31,20 +31,10 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function supplier(): BelongsTo
+    public function menus(): BelongsToMany
     {
-        return $this->belongsTo(Supplier::class);
-    }
-
-    public function menu(): BelongsTo
-    {
-        return $this->belongsTo(Menu::class);
-    }
-
-    public function extras(): BelongsToMany
-    {
-        return $this->belongsToMany(Extra::class, 'order_extras')
-            ->withPivot('quantity')
+        return $this->belongsToMany(Menu::class, 'order_menus')
+            ->withPivot(['remark', 'pricing', 'quantity', 'date', 'article_not_retrieved', 'deleted'])
             ->withTimestamps();
     }
 } 

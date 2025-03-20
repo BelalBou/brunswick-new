@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class User extends Authenticatable
 {
@@ -20,10 +21,14 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        'first_name',
+        'last_name',
+        'language',
+        'type',
+        'email_address',
         'password',
-        'role',
+        'pending_registration',
+        'deleted',
         'created_at',
         'updated_at'
     ];
@@ -50,6 +55,8 @@ class User extends Authenticatable
             'password' => 'hashed',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
+            'pending_registration' => 'boolean',
+            'deleted' => 'boolean',
         ];
     }
 
@@ -57,5 +64,10 @@ class User extends Authenticatable
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function supplier(): BelongsTo
+    {
+        return $this->belongsTo(Supplier::class);
     }
 }

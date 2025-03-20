@@ -28,4 +28,9 @@ class MenuSize extends Model
     {
         return $this->hasMany(Menu::class);
     }
+
+    public function extras(): HasMany
+    {
+        return $this->hasMany(Extra::class);
+    }
 } 
