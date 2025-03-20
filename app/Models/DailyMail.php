@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class DailyMail extends Model
 {
@@ -12,16 +13,25 @@ class DailyMail extends Model
         'date',
         'sent',
         'error',
-        'deleted',
-        'created_at',
-        'updated_at'
+        'deleted'
     ];
 
     protected $casts = [
         'date' => 'datetime',
         'sent' => 'boolean',
-        'deleted' => 'boolean',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
+        'deleted' => 'boolean'
     ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
+    /**
+     * Relation avec l'utilisateur
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 } 
