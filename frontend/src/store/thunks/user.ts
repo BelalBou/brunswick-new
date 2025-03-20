@@ -69,6 +69,14 @@ export function userDispatch(
   };
 }
 
+/** ---------------------------
+ * editToken
+ */
+export const editToken = (token: string) => (dispatch: AppDispatch) => {
+  dispatch(setUserToken(token));
+  axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
+};
+
 // ---------------------------
 //  ADD USER
 function addUserDispatch(res: any) {

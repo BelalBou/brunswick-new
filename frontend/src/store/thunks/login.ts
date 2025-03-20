@@ -74,6 +74,48 @@ export const login = (emailAddress: string, password: string) => async (dispatch
 };
 
 /** ---------------------------
+ * register
+ */
+export const register = (password: string, confirmPassword: string) => async (dispatch: Function) => {
+  dispatch(setLoginPending(true));
+  dispatch(setLoginSuccess(false));
+  dispatch(setLoginError(""));
+
+  try {
+    const res = await axios.post(`/api/users/register/`, { password, confirmPassword });
+    dispatch(setLoginSuccess(!!res.data));
+    if (!res.data) {
+      dispatch(setLoginError("Registration failed!"));
+    }
+  } catch (err: any) {
+    dispatch(setLoginError(String(err)));
+  } finally {
+    dispatch(setLoginPending(false));
+  }
+};
+
+/** ---------------------------
+ * resetPassword
+ */
+export const resetPassword = (emailAddress: string) => async (dispatch: Function) => {
+  dispatch(setLoginPending(true));
+  dispatch(setLoginSuccess(false));
+  dispatch(setLoginError(""));
+
+  try {
+    const res = await axios.post(`/api/users/reset-password/`, { emailAddress });
+    dispatch(setLoginSuccess(!!res.data));
+    if (!res.data) {
+      dispatch(setLoginError("Password reset request failed!"));
+    }
+  } catch (err: any) {
+    dispatch(setLoginError(String(err)));
+  } finally {
+    dispatch(setLoginPending(false));
+  }
+};
+
+/** ---------------------------
  * logout
  */
 export const logout = () => (dispatch: Function) => {

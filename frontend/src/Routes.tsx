@@ -5,7 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 
 // Vos imports de containers
 import App from "./containers/AppContainer";
-// import Login from "./containers/LoginContainer";
+import Login from "./containers/LoginContainer";
 // import Menus from "./containers/MenusContainer";
 // import Cart from "./containers/CartContainer";
 // import Orders from "./containers/OrdersContainer";
@@ -39,8 +39,8 @@ function MyRoutes() {
           <Route path="/" element={<App />} />
 
           {/* Login (avec paramètre id éventuel : "/login/:id" */}
-          {/* <Route path="/login" element={<Login />} />
-          <Route path="/login/:id" element={<Login />} /> */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/login/:id" element={<Login />} />
 
           {/* Menus */}
           {/* <Route path="/menus" element={<Menus />} />
