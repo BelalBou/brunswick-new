@@ -14,10 +14,10 @@ interface IDictionaryItem {
    */
   export function checkDictionnary(
     tag: string,
-    dictionnaryList: IDictionaryItem[],
+    dictionnaryList: IDictionaryItem[] | null | undefined,
     languageName: string
   ): string {
-    if (!dictionnaryList || dictionnaryList.length === 0) {
+    if (!Array.isArray(dictionnaryList) || dictionnaryList.length === 0) {
       return tag;
     }
   
