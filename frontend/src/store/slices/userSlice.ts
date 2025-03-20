@@ -1,107 +1,88 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { UserState, LoginCredentials, RegisterData, UpdateUserData, User } from '../../interfaces/user.interface';
-import axios from 'axios';
+// ./slices/userSlice.ts
 
-// État initial
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import IUser from "../../interfaces/IUser";
+
+interface UserState {
+  userId: number;
+  userFirstName: string;
+  userLastName: string;
+  userLanguage: string;
+  userType: string;
+  userSupplierId: number;
+  userEmailAddress: string;
+  userPassword: string;
+  userToken: string;
+  userList: IUser[];
+  userValidity: string;
+}
+
 const initialState: UserState = {
-  currentUser: null,
-  isAuthenticated: false,
-  loading: false,
-  error: null,
+  userId: -1,
+  userFirstName: "",
+  userLastName: "",
+  userLanguage: "fr",
+  userType: "",
+  userSupplierId: -1,
+  userEmailAddress: "",
+  userPassword: "",
+  userToken: "",
+  userList: [],
+  userValidity: ""
 };
 
-// Thunks
-export const login = createAsyncThunk(
-  'user/login',
-  async (credentials: LoginCredentials) => {
-    const response = await axios.post('/api/auth/login', credentials);
-    return response.data;
-  }
-);
-
-export const register = createAsyncThunk(
-  'user/register',
-  async (data: RegisterData) => {
-    const response = await axios.post('/api/auth/register', data);
-    return response.data;
-  }
-);
-
-export const updateProfile = createAsyncThunk(
-  'user/updateProfile',
-  async (data: UpdateUserData) => {
-    const response = await axios.put('/api/auth/profile', data);
-    return response.data;
-  }
-);
-
-export const logout = createAsyncThunk(
-  'user/logout',
-  async () => {
-    await axios.post('/api/auth/logout');
-    return null;
-  }
-);
-
-// Slice
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
-    clearError: (state) => {
-      state.error = null;
+    setUserId(state, action: PayloadAction<number>) {
+      state.userId = action.payload;
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      // Login
-      .addCase(login.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(login.fulfilled, (state, action) => {
-        state.loading = false;
-        state.currentUser = action.payload.user;
-        state.isAuthenticated = true;
-      })
-      .addCase(login.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || 'Une erreur est survenue';
-      })
-      // Register
-      .addCase(register.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(register.fulfilled, (state, action) => {
-        state.loading = false;
-        state.currentUser = action.payload.user;
-        state.isAuthenticated = true;
-      })
-      .addCase(register.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || 'Une erreur est survenue';
-      })
-      // Update Profile
-      .addCase(updateProfile.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(updateProfile.fulfilled, (state, action) => {
-        state.loading = false;
-        state.currentUser = action.payload.user;
-      })
-      .addCase(updateProfile.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || 'Une erreur est survenue';
-      })
-      // Logout
-      .addCase(logout.fulfilled, (state) => {
-        state.currentUser = null;
-        state.isAuthenticated = false;
-      });
-  },
+    setUserFirstName(state, action: PayloadAction<string>) {
+      state.userFirstName = action.payload;
+    },
+    setUserLastName(state, action: PayloadAction<string>) {
+      state.userLastName = action.payload;
+    },
+    setUserLanguage(state, action: PayloadAction<string>) {
+      state.userLanguage = action.payload;
+    },
+    setUserType(state, action: PayloadAction<string>) {
+      state.userType = action.payload;
+    },
+    setUserSupplierId(state, action: PayloadAction<number>) {
+      state.userSupplierId = action.payload;
+    },
+    setUserEmailAddress(state, action: PayloadAction<string>) {
+      state.userEmailAddress = action.payload;
+    },
+    setUserPassword(state, action: PayloadAction<string>) {
+      state.userPassword = action.payload;
+    },
+    setUserToken(state, action: PayloadAction<string>) {
+      state.userToken = action.payload;
+    },
+    setUserList(state, action: PayloadAction<IUser[]>) {
+      state.userList = action.payload;
+    },
+    setUserValidity(state, action: PayloadAction<string>) {
+      state.userValidity = action.payload;
+    }
+  }
 });
 
-export const { clearError } = userSlice.actions;
-export default userSlice.reducer; 
+export const {
+  setUserId,
+  setUserFirstName,
+  setUserLastName,
+  setUserLanguage,
+  setUserType,
+  setUserSupplierId,
+  setUserEmailAddress,
+  setUserPassword,
+  setUserToken,
+  setUserList,
+  setUserValidity
+} = userSlice.actions;
+
+export default userSlice.reducer;
