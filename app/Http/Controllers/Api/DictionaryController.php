@@ -15,11 +15,19 @@ class DictionaryController extends Controller
      */
     public function index()
     {
-        $entries = Dictionary::where('deleted', false)
-            ->orderBy('tag', 'ASC')
-            ->get(['id', 'tag', 'translation_fr', 'translation_en']);
+        try {
+            $entries = Dictionary::where('deleted', false)
+                ->orderBy('tag', 'ASC')
+                ->select(['id', 'tag', 'translation_fr', 'translation_en'])
+                ->get();
 
-        return response()->json($entries);
+            return response()->json($entries);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Une erreur est survenue lors de la récupération des entrées du dictionnaire',
+                'details' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

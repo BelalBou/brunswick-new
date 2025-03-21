@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Dictionary extends Model
 {
-    protected $table = 'dictionaries';
+    protected $table = 'dictionnaries';
 
     protected $fillable = [
         'tag',

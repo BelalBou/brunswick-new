@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Allergy extends Model
 {
+    protected $table = 'allergies';
+    
     protected $fillable = [
         'name',
         'description',

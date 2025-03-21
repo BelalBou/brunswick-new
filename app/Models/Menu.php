@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Menu extends Model
 {
+    protected $table = 'menus';
+
     protected $fillable = [
         'title',
         'title_en',

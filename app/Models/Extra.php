@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Extra extends Model
 {
+    protected $table = 'extras';
+
+
     protected $fillable = [
         'title',
         'title_en',
