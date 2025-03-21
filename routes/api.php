@@ -153,7 +153,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
 
         Route::middleware(['role:customer'])->group(function () {
-            Route::post('/list-customer', [OrderController::class, 'listForCustomer']);
+            Route::get('/list-customer', [OrderController::class, 'listForCustomer']);
         });
 
         Route::middleware(['role:supplier'])->group(function () {

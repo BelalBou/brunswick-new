@@ -35,9 +35,9 @@ class AuthController extends Controller
             ->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['Les informations de connexion sont incorrectes.'],
-            ]);
+            return response()->json([
+                'error' => 'Les informations de connexion sont incorrectes.'
+            ], 401);
         }
 
         // Définir la durée du token en fonction du type d'utilisateur
@@ -46,12 +46,22 @@ class AuthController extends Controller
         // Supprimer les anciens tokens
         $user->tokens()->delete();
 
-        // Créer un nouveau token
-        $token = $user->createToken('auth-token', [], now()->addMinutes($tokenDuration))->plainTextToken;
+        // Créer un nouveau token avec des permissions spécifiques
+        $abilities = ['*'];
+        if ($user->type === 'customer') {
+            $abilities = ['customer'];
+        } elseif ($user->type === 'supplier') {
+            $abilities = ['supplier'];
+        } elseif ($user->type === 'administrator') {
+            $abilities = ['administrator'];
+        }
+
+        $token = $user->createToken('auth-token', $abilities, now()->addMinutes($tokenDuration))->plainTextToken;
 
         return response()->json([
             'user' => $user,
-            'token' => $token
+            'token' => $token,
+            'expires_at' => now()->addMinutes($tokenDuration)
         ]);
     }
 
