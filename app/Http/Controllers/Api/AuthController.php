@@ -41,7 +41,7 @@ class AuthController extends Controller
         }
 
         // Définir la durée du token en fonction du type d'utilisateur
-        $tokenDuration = $user->type === 'administrator' ? 12 * 60 : 10;
+        $tokenDuration = 12 * 60; // 12 heures pour tous les utilisateurs
         
         // Supprimer les anciens tokens
         $user->tokens()->delete();

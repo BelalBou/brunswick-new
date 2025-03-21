@@ -27,8 +27,6 @@ import {
   setUserToken
 } from "../slices/userSlice";
 
-// 4) On importe la fonction `setSelected` depuis pageSlice
-import { setSelected } from "../slices/pageSlice";
 
 // Authentification
 const userLS = localStorage.getItem("user") || null;
@@ -135,9 +133,8 @@ export const logout = () => (dispatch: Function) => {
   dispatch(setUserPassword(""));
   dispatch(setUserToken(""));
 
-  // On remet la page sélectionnée à 1
-  dispatch(setSelected(1));
-
-  // On vide le storage
-  localStorage.clear();
+  // Nettoyer le localStorage
+  localStorage.removeItem("user");
+  localStorage.removeItem("cartList");
+  localStorage.removeItem("selected");
 };
