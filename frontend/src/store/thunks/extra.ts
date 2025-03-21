@@ -146,9 +146,7 @@ export const getExtrasSupplier = (supplierId: number) => async (dispatch: Functi
 
   try {
     const response = await axios.get(`/api/extras/list_supplier/${supplierId}`);
-    // On met à jour le store avec la nouvelle action
     dispatch(setExtraList(response.data));
-    // On appelle le dispatch additionnel (logique existante)
     dispatch(getExtrasSupplierDispatch({ payload: { data: response.data } }));
   } catch (err: any) {
     dispatch(setListError(String(err)));

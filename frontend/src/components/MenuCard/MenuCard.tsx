@@ -30,31 +30,31 @@ export default function MenuCard({
       self.map((x) => x.title).indexOf(value.title) === index
   );
 
-  const sxCard = {
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-  };
+  // const sxCard = {
+  //   height: "100%",
+  //   display: "flex",
+  //   flexDirection: "column",
+  // };
 
-  const sxCardMedia = {
-    paddingTop: "56.25%", // 16:9
-    "@media (minWidth: 600px)": {
-      paddingTop: "56.25%", // 16:9
-    },
-  };
+  // const sxCardMedia = {
+  //   paddingTop: "56.25%", // 16:9
+  //   "@media (minWidth: 600px)": {
+  //     paddingTop: "56.25%", // 16:9
+  //   },
+  // };
 
-  const sxCardContent = {
-    flexGrow: 1,
-  };
+  // const sxCardContent = {
+  //   flexGrow: 1,
+  // };
 
-  const sxCardActions = {
-    display: "flex",
-    justifyContent: "space-between",
-    padding: "16px",
-    "@media (minWidth: 600px)": {
-      padding: "16px",
-    },
-  };
+  // const sxCardActions = {
+  //   display: "flex",
+  //   justifyContent: "space-between",
+  //   padding: "16px",
+  //   "@media (minWidth: 600px)": {
+  //     padding: "16px",
+  //   },
+  // };
 
   return (
     <ImageList sx={{ width: "100%", pl: 1 }}>

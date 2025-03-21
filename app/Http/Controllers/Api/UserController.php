@@ -161,4 +161,23 @@ class UserController extends Controller
             'message' => 'Utilisateur supprimé avec succès'
         ]);
     }
+
+    /**
+     * Vérifie la validité de l'utilisateur connecté
+     */
+    public function check_validity(Request $request)
+    {
+        $user = $request->user();
+        
+        if (!$user) {
+            return response()->json([
+                'error' => 'Utilisateur non authentifié'
+            ], 401);
+        }
+
+        return response()->json([
+            'valid' => true,
+            'user' => $user
+        ]);
+    }
 }

@@ -19,11 +19,11 @@ Route::post('auth/login', [AuthController::class, 'login']);
 Route::post('auth/reset-password', [AuthController::class, 'resetPassword']);
 Route::post('auth/finalize-registration', [AuthController::class, 'finalizeRegistration']);
 
-// Vérification de la validité du token
-Route::get('users/check_validity', [UserController::class, 'check_validity']);
-
 // Routes protégées
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
+    // Vérification de la validité du token
+    Route::get('users/check_validity', [UserController::class, 'check_validity']);
+
     // Déconnexion
     Route::post('auth/logout', [AuthController::class, 'logout']);
 

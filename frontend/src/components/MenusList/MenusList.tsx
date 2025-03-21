@@ -36,17 +36,17 @@ export default function MenusList({
     },
   };
 
-  const sxListItem = {
-    "@media (minWidth: 600px)": {
-      padding: "16px",
-    },
-  };
+  // const sxListItem = {
+  //   "@media (minWidth: 600px)": {
+  //     padding: "16px",
+  //   },
+  // };
 
-  const sxListItemText = {
-    "@media (minWidth: 600px)": {
-      marginRight: "16px",
-    },
-  };
+  // const sxListItemText = {
+  //   "@media (minWidth: 600px)": {
+  //     marginRight: "16px",
+  //   },
+  // };
 
   return (
     <List sx={sxList}>
