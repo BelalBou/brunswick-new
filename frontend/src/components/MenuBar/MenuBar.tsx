@@ -53,6 +53,7 @@ interface IProps {
   search?: boolean;
   selected: number;
   title?: string;
+  userLanguage?: string;
 
   /** Callbacks */
   onLogout: () => void;
@@ -175,6 +176,7 @@ function MenuBar({
   search = false,
   selected,
   title = "",
+  userLanguage,
   onLogout,
   onChangeSelected,
   checkDictionnary,

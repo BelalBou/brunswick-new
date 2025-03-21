@@ -137,6 +137,7 @@ const Menus: React.FC<MenusProps> = (props) => {
   // Réagir aux changements de supplierList
   useEffect(() => {
     if (supplierList && supplierList.length > 0) {
+      actions.getDictionnaries();
       actions.getCategoriesSupplier(supplierList[0].id);
       actions.getMenusSupplier(supplierList[0].id);
       setSelectedSupplier(supplierList[0].id);
@@ -253,6 +254,7 @@ const Menus: React.FC<MenusProps> = (props) => {
       onSearch={handleSearch}
       onChangeSelected={handleChangeSelected}
       checkDictionnary={checkDictionnary}
+      userLanguage={userLanguage}
     >
       {/* Snackbar pour commande réussie */}
       {shoppingCartOrdered && routeId === "success" && (

@@ -29,8 +29,8 @@ export default function MenusList({
   );
 
   return (
-    <Box sx={{ flexGrow: 1, padding: 2 }}>
-      <Grid container spacing={2}>
+    <Box sx={{ flexGrow: 1, padding: { xs: 1, sm: 2 } }}>
+      <Grid container spacing={{ xs: 1, sm: 2 }}>
         {filteredMenuList.map((menu) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={menu.id}>
             {menuList.filter((x) => x.title === menu.title).length > 1 ? (
@@ -43,14 +43,35 @@ export default function MenusList({
             ) : (
               <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                 <CardActionArea onClick={() => onOpenAdd(menu)} sx={{ height: '100%' }}>
-                  <Box sx={{ display: 'flex', padding: 2 }}>
+                  <Box sx={{ 
+                    display: 'flex', 
+                    padding: { xs: 1, sm: 2 },
+                    flexDirection: { xs: 'column', sm: 'row' }
+                  }}>
+                    <CardMedia
+                      component="img"
+                      sx={{ 
+                        width: { xs: '100%', sm: 96 }, 
+                        height: { xs: 140, sm: 96 }, 
+                        borderRadius: 1,
+                        objectFit: 'cover',
+                        minWidth: { sm: 96 },
+                        mb: { xs: 1, sm: 0 },
+                        ml: { xs: 0, sm: 1 },
+                        order: { xs: -1, sm: 2 }
+                      }}
+                      image={menu.picture ? `${S3_BASE_URL}/${menu.picture}` : placeHolderIcon}
+                      alt={menu.title}
+                    />
+                    
                     <Box sx={{ 
                       flex: '1 1 auto', 
                       overflow: 'hidden',
-                      maxWidth: 'calc(100% - 110px)' // Réserver de l'espace pour l'image
+                      maxWidth: { xs: '100%', sm: 'calc(100% - 110px)' },
+                      order: { xs: 2, sm: 1 }
                     }}>
-                      <Typography variant="subtitle1" component="div" gutterBottom noWrap>
-                        {menu.title}
+                      <Typography variant="subtitle1" component="div" gutterBottom noWrap color="text.primary">
+                        {userLanguage === "en" ? (menu.title_en || menu.title) : menu.title}
                       </Typography>
                       
                       {menu.MenuSize && (
@@ -61,7 +82,7 @@ export default function MenusList({
                           noWrap
                         >
                           {userLanguage === "en"
-                            ? menu.MenuSize.title_en
+                            ? (menu.MenuSize.title_en || menu.MenuSize.title)
                             : menu.MenuSize.title}
                         </Typography>
                       )}
@@ -78,7 +99,9 @@ export default function MenusList({
                           textOverflow: 'ellipsis'
                         }}
                       >
-                        {menu.description || ""}
+                        {userLanguage === "en" 
+                          ? (menu.description_en || menu.description || "") 
+                          : (menu.description || "")}
                       </Typography>
                       
                       <Typography
@@ -93,20 +116,6 @@ export default function MenusList({
                         €
                       </Typography>
                     </Box>
-                    
-                    <CardMedia
-                      component="img"
-                      sx={{ 
-                        width: 96, 
-                        height: 96, 
-                        borderRadius: 1,
-                        objectFit: 'cover',
-                        minWidth: 96, // S'assurer que l'image ne rétrécit pas
-                        ml: 1 // Un peu de marge à gauche
-                      }}
-                      image={menu.picture ? `${S3_BASE_URL}/${menu.picture}` : placeHolderIcon}
-                      alt={menu.title}
-                    />
                   </Box>
                 </CardActionArea>
               </Card>
