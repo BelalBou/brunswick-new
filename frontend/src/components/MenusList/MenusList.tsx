@@ -69,11 +69,12 @@ export default function MenusList({
                     </Typography>
                   }
                   secondary={
-                    <>
+                    <div>
                       {menu.MenuSize && (
                         <Typography
+                          component="span"
                           color="text.secondary"
-                          sx={{ mt: 1 }}
+                          sx={{ mt: 1, display: 'block' }}
                         >
                           {userLanguage === "en"
                             ? menu.MenuSize.title_en
@@ -81,8 +82,9 @@ export default function MenusList({
                         </Typography>
                       )}
                       <Typography
+                        component="span"
                         color="text.secondary"
-                        sx={{ mt: 1 }}
+                        sx={{ mt: 1, display: 'block' }}
                         noWrap
                       >
                         {menu.description ? (
@@ -95,16 +97,17 @@ export default function MenusList({
                         )}
                       </Typography>
                       <Typography
+                        component="span"
                         variant="subtitle1"
                         color="primary"
-                        sx={{ fontWeight: 550, mt: 1 }}
+                        sx={{ fontWeight: 550, mt: 1, display: 'block' }}
                       >
                         {parseFloat(menu.pricing).toLocaleString("fr", {
                           minimumFractionDigits: 2,
                         })}{" "}
                         €
                       </Typography>
-                    </>
+                    </div>
                   }
                 />
                 <ListItemIcon>

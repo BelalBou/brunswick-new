@@ -47,15 +47,8 @@ class AuthController extends Controller
         $user->tokens()->delete();
 
         // Créer un nouveau token avec des permissions spécifiques
-        $abilities = ['*'];
-        if ($user->type === 'customer') {
-            $abilities = ['customer'];
-        } elseif ($user->type === 'supplier') {
-            $abilities = ['supplier'];
-        } elseif ($user->type === 'administrator') {
-            $abilities = ['administrator'];
-        }
-
+        $abilities = [$user->type];
+        
         $token = $user->createToken('auth-token', $abilities, now()->addMinutes($tokenDuration))->plainTextToken;
 
         return response()->json([

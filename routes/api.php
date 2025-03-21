@@ -156,9 +156,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::post('/list-date', [OrderController::class, 'listByDate']);
         });
 
-        Route::middleware(['role:customer'])->group(function () {
-            Route::post('/list-customer', [OrderController::class, 'listForCustomer']);
-        });
+        // Route accessible à tous les utilisateurs authentifiés
+        Route::post('/list-customer', [OrderController::class, 'listForCustomer']);
 
         Route::middleware(['role:supplier'])->group(function () {
             Route::post('/list-supplier/{id}', [OrderController::class, 'listForSupplier']);
