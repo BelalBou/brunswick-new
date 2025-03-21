@@ -1,10 +1,8 @@
 // ./components/MenuCard/MenusList.tsx
-import { Fragment } from "react";
 import {
   Grid,
   Card,
   CardActionArea,
-  CardContent,
   CardMedia,
   Typography,
   Box
