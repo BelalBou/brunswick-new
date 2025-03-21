@@ -224,8 +224,10 @@ const Menus: React.FC<MenusProps> = (props) => {
       : false) ||
     x.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
     x.description_en.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    x.Category.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    x.Category.title_en.toLowerCase().includes(searchTerm.toLowerCase())
+    (x.Category
+      ? x.Category.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        x.Category.title_en.toLowerCase().includes(searchTerm.toLowerCase())
+      : false)
   );
 
   if (!isLoginSuccess) {
@@ -350,8 +352,10 @@ const Menus: React.FC<MenusProps> = (props) => {
                                       : false) ||
                                     x.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
                                     x.description_en.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                    x.Category.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                    x.Category.title_en.toLowerCase().includes(searchTerm.toLowerCase())
+                                    (x.Category
+                                      ? x.Category.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                        x.Category.title_en.toLowerCase().includes(searchTerm.toLowerCase())
+                                      : false)
                                   )
                                   .filter((menu) => menu.category_id === category.id)
                                   .sort((a, b) => a.title.localeCompare(b.title))}
@@ -371,8 +375,10 @@ const Menus: React.FC<MenusProps> = (props) => {
                                       : false) ||
                                     x.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
                                     x.description_en.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                    x.Category.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                    x.Category.title_en.toLowerCase().includes(searchTerm.toLowerCase())
+                                    (x.Category
+                                      ? x.Category.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                        x.Category.title_en.toLowerCase().includes(searchTerm.toLowerCase())
+                                      : false)
                                   )
                                   .filter((menu) => menu.category_id === category.id)
                                   .sort((a, b) => a.title.localeCompare(b.title))}
