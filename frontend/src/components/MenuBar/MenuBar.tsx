@@ -159,6 +159,10 @@ const sxList: SxProps<Theme> = (theme) => ({
   padding: 0,
 });
 
+const sxListItemText: SxProps<Theme> = {
+  marginLeft: '-55px',
+};
+
 const sxLinearProgress: SxProps<Theme> = (theme) => ({
   zIndex: theme.zIndex.drawer + 2,
 });
@@ -310,7 +314,7 @@ function MenuBar({
               <ListItemIcon>
                 <RestaurantMenuIcon />
               </ListItemIcon>
-              <ListItemText inset primary="Menus" />
+              <ListItemText inset primary="Menus" sx={sxListItemText} />
             </ListItemButton>
             <ListItemButton
               onClick={() => handleClickListItem(2)}
@@ -319,7 +323,7 @@ function MenuBar({
               to="/cart"
             >
               {renderDrawerCartBadge()}
-              <ListItemText inset primary={checkDictionnary("_MON_PANIER")} />
+              <ListItemText inset primary={checkDictionnary("_MON_PANIER")} sx={sxListItemText} />
             </ListItemButton>
           </>
         )}
@@ -330,7 +334,7 @@ function MenuBar({
           to="/orders"
         >
           {renderDrawerOrderBadge()}
-          <ListItemText inset primary={checkDictionnary("_MES_COMMANDES")} />
+          <ListItemText inset primary={checkDictionnary("_MES_COMMANDES")} sx={sxListItemText} />
         </ListItemButton>
         <Divider />
         {(userType === "administrator" || userType === "vendor") && (
@@ -348,7 +352,7 @@ function MenuBar({
                 <ListItemIcon>
                   <FormatListBulletedIcon />
                 </ListItemIcon>
-                <ListItemText inset primary="Afficher tout" />
+                <ListItemText inset primary="Afficher tout" sx={sxListItemText} />
               </ListItemButton>
             )}
             <ListItemButton
@@ -360,7 +364,7 @@ function MenuBar({
               <ListItemIcon>
                 <ReportProblemIcon />
               </ListItemIcon>
-              <ListItemText inset primary="Non-réceptions" />
+              <ListItemText inset primary="Non-réceptions" sx={sxListItemText} />
             </ListItemButton>
             <Divider />
           </>
@@ -379,7 +383,7 @@ function MenuBar({
               <ListItemIcon>
                 <FolderIcon />
               </ListItemIcon>
-              <ListItemText inset primary="Catégories" />
+              <ListItemText inset primary="Catégories" sx={sxListItemText} />
             </ListItemButton>
             <ListItemButton
               onClick={() => handleClickListItem(14)}
@@ -390,7 +394,7 @@ function MenuBar({
               <ListItemIcon>
                 <FormatSizeIcon />
               </ListItemIcon>
-              <ListItemText inset primary="Tailles" />
+              <ListItemText inset primary="Tailles" sx={sxListItemText} />
             </ListItemButton>
             <ListItemButton
               onClick={() => handleClickListItem(15)}
@@ -401,7 +405,7 @@ function MenuBar({
               <ListItemIcon>
                 <BugReportIcon />
               </ListItemIcon>
-              <ListItemText inset primary="Allergènes" />
+              <ListItemText inset primary="Allergènes" sx={sxListItemText} />
             </ListItemButton>
             <ListItemButton
               onClick={() => handleClickListItem(18)}
@@ -412,7 +416,7 @@ function MenuBar({
               <ListItemIcon>
                 <AddBoxIcon />
               </ListItemIcon>
-              <ListItemText inset primary="Suppléments" />
+              <ListItemText inset primary="Suppléments" sx={sxListItemText} />
             </ListItemButton>
             <ListItemButton
               onClick={() => handleClickListItem(16)}
@@ -423,7 +427,7 @@ function MenuBar({
               <ListItemIcon>
                 <RestaurantMenuIcon />
               </ListItemIcon>
-              <ListItemText inset primary="Menus" />
+              <ListItemText inset primary="Menus" sx={sxListItemText} />
             </ListItemButton>
             <Divider />
             <ListSubheader component="div" disableSticky>
@@ -438,7 +442,7 @@ function MenuBar({
               <ListItemIcon>
                 <PeopleIcon />
               </ListItemIcon>
-              <ListItemText inset primary="Utilisateurs" />
+              <ListItemText inset primary="Utilisateurs" sx={sxListItemText} />
             </ListItemButton>
             <ListItemButton
               onClick={() => handleClickListItem(12)}
@@ -449,7 +453,7 @@ function MenuBar({
               <ListItemIcon>
                 <LocalShippingIcon />
               </ListItemIcon>
-              <ListItemText inset primary="Fournisseurs" />
+              <ListItemText inset primary="Fournisseurs" sx={sxListItemText} />
             </ListItemButton>
             <ListItemButton
               onClick={() => handleClickListItem(17)}
@@ -460,7 +464,7 @@ function MenuBar({
               <ListItemIcon>
                 <SettingsIcon />
               </ListItemIcon>
-              <ListItemText inset primary="Paramètres" />
+              <ListItemText inset primary="Paramètres" sx={sxListItemText} />
             </ListItemButton>
             <Divider />
           </>
