@@ -69,12 +69,13 @@ export default function MenusList({
                     </Typography>
                   }
                   secondary={
-                    <div>
+                    <>
                       {menu.MenuSize && (
                         <Typography
                           component="span"
+                          variant="body2"
                           color="text.secondary"
-                          sx={{ mt: 1, display: 'block' }}
+                          sx={{ mt: 1, display: 'inline-block', width: '100%' }}
                         >
                           {userLanguage === "en"
                             ? menu.MenuSize.title_en
@@ -83,15 +84,16 @@ export default function MenusList({
                       )}
                       <Typography
                         component="span"
+                        variant="body2"
                         color="text.secondary"
-                        sx={{ mt: 1, display: 'block' }}
+                        sx={{ mt: 1, display: 'inline-block', width: '100%' }}
                         noWrap
                       >
                         {menu.description ? (
-                          <>
+                          <span>
                             {menu.description}
                             <br />
-                          </>
+                          </span>
                         ) : (
                           ""
                         )}
@@ -100,14 +102,14 @@ export default function MenusList({
                         component="span"
                         variant="subtitle1"
                         color="primary"
-                        sx={{ fontWeight: 550, mt: 1, display: 'block' }}
+                        sx={{ fontWeight: 550, mt: 1, display: 'inline-block', width: '100%' }}
                       >
                         {parseFloat(menu.pricing).toLocaleString("fr", {
                           minimumFractionDigits: 2,
                         })}{" "}
                         €
                       </Typography>
-                    </div>
+                    </>
                   }
                 />
                 <ListItemIcon>
