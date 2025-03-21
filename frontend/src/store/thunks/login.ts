@@ -40,20 +40,17 @@ axios.defaults.headers.common["authorization"] = `Bearer ${tokenLS}`;
  */
 function loginDispatch(res: any, emailAddress: string, password: string) {
   return (dispatch: Function) => {
-    // On indique que le login est un succès si res.data.length > 0
-    dispatch(setLoginSuccess(!!res.data.length));
+    // On indique que le login est un succès si on a un user et un token
+    dispatch(setLoginSuccess(!!res.data.user && !!res.data.token));
 
-    if (!res.data.length) {
+    if (!res.data.user || !res.data.token) {
       dispatch(setLoginError("Login failed!"));
     } else {
       // Récupération du token
-      const userToken =
-        res.data.length > 1 && res.data[1] && res.data[1].token
-          ? res.data[1].token
-          : "";
+      const userToken = res.data.token;
 
       // Mise à jour de l'utilisateur via notre thunk userDispatch
-      dispatch(userDispatch(res.data[0], userToken, emailAddress, password));
+      dispatch(userDispatch(res.data.user, userToken, emailAddress, password));
     }
   };
 }
@@ -64,9 +61,12 @@ export const login = (emailAddress: string, password: string) => async (dispatch
   dispatch(setLoginError(""));
 
   try {
-    const res = await axios.post(`/api/users/login/`, { emailAddress, password });
+    console.log('Tentative de connexion avec:', { emailAddress });
+    const res = await axios.post(`/api/auth/login`, { emailAddress, password });
+    console.log('Réponse du serveur:', res.data);
     dispatch(loginDispatch(res, emailAddress, password));
   } catch (err: any) {
+    console.error('Erreur de connexion:', err);
     dispatch(setLoginError(String(err)));
   } finally {
     dispatch(setLoginPending(false));

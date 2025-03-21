@@ -118,9 +118,9 @@ export default function Login(props: IProps) {
 
   // Equivalent du componentDidMount + componentDidUpdate(token)
   useEffect(() => {
-    actions.getDictionnaries();
-    // Si on a un token en paramètre => logout_and_edit (version simplifiée)
+    // On ne charge les dictionnaires que si on a un token
     if (token) {
+      actions.getDictionnaries();
       logout_and_edit(token);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
