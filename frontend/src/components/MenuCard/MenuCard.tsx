@@ -105,8 +105,8 @@ export default function MenuCard({
                         {menu.MenuSize && (
                           <Typography variant="body1" color="text.secondary" gutterBottom>
                             {userLanguage === "en"
-                              ? menu.MenuSize.title_en
-                              : menu.MenuSize.title}
+                              ? (menu.MenuSize?.title_en || menu.MenuSize?.title || "")
+                              : (menu.MenuSize?.title || "")}
                           </Typography>
                         )}
                         <Typography

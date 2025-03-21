@@ -2,26 +2,23 @@
 import IMenu from "../../interfaces/IMenu";
 
 /**
- * Trie deux menus selon :
- *  1. Leur `title` (ordre alphabétique, insensible à la casse)
- *  2. Si les `title` sont identiques et qu'ils possèdent tous deux un `MenuSize`,
+ * Fonction de tri des menus de la plus petite à la plus grande taille.
+ * Par convention, lorsque deux menus partagent le même titre (= même produit):
  *     on compare `MenuSize.title` (toujours alphabétique, insensible à la casse).
+ * Sinon, on compare la propriété `title` des menus.
+ * 
+ * @param a Le premier menu à comparer
+ * @param b Le second menu à comparer
  */
-export function menuSort(a: IMenu, b: IMenu): number {
-  const titleA = a.title.toLowerCase();
-  const titleB = b.title.toLowerCase();
-
-  const primaryCompare = titleA.localeCompare(titleB);
-
-  // Si le titre est identique, on compare par MenuSize (si présent)
-  if (primaryCompare === 0 && a.MenuSize && b.MenuSize) {
-    const sizeA = a.MenuSize.title.toLowerCase();
-    const sizeB = b.MenuSize.title.toLowerCase();
+export default function menuSort(a: IMenu, b: IMenu): number {
+  // On vérifie si les menus ont le même titre
+  if (a.title.toLowerCase() === b.title.toLowerCase()) {
+    // Si oui, on compare par taille
+    const sizeA = a.MenuSize?.title?.toLowerCase() || "";
+    const sizeB = b.MenuSize?.title?.toLowerCase() || "";
     return sizeA.localeCompare(sizeB);
   }
-
-  return primaryCompare;
+  
+  // Sinon on trie par défaut par titre
+  return a.title.toLowerCase().localeCompare(b.title.toLowerCase());
 }
-
-// Export par défaut si vous le souhaitez
-export default menuSort;

@@ -82,8 +82,8 @@ export default function MenusList({
                           noWrap
                         >
                           {userLanguage === "en"
-                            ? (menu.MenuSize.title_en || menu.MenuSize.title)
-                            : menu.MenuSize.title}
+                            ? (menu.MenuSize?.title_en || menu.MenuSize?.title || "")
+                            : (menu.MenuSize?.title || "")}
                         </Typography>
                       )}
                       

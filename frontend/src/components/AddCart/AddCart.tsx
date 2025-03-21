@@ -21,6 +21,7 @@ import {
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import BugReportIcon from "@mui/icons-material/BugReport";
+import CloseIcon from "@mui/icons-material/Close";
 import placeHolderIcon from "../../images/placeholder.svg";
 import IMenu from "../../interfaces/IMenu";
 import ICart from "../../interfaces/ICart";
@@ -109,7 +110,15 @@ export default function AddCart(props: AddCartProps) {
         },
       }}
     >
-      <DialogTitle id="form-dialog-title" sx={{ textAlign: "center" }}>
+      <DialogTitle id="form-dialog-title" sx={{ pb: 1, textAlign: "center" }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+          <Typography variant="h6" sx={{ fontWeight: 600 }}>
+            {checkDictionnary("_AJOUTER_AU_PANIER")}
+          </Typography>
+          <IconButton onClick={onClose} size="small" edge="end">
+            <CloseIcon />
+          </IconButton>
+        </Box>
         <Box
           component="img"
           src={
@@ -117,132 +126,171 @@ export default function AddCart(props: AddCartProps) {
               ? `${S3_BASE_URL}/${currentMenu.picture}`
               : placeHolderIcon
           }
-          alt="menu"
+          alt={userLanguage === "en" ? (currentMenu.title_en || currentMenu.title || "") : (currentMenu.title || "")}
           sx={{
-            width: { xs: "192px", md: "256px" },
-            borderRadius: "3px",
+            width: { xs: "180px", md: "220px" },
+            height: { xs: "180px", md: "220px" },
+            objectFit: "cover",
+            borderRadius: "8px",
+            margin: "0 auto",
+            display: "block"
           }}
         />
       </DialogTitle>
-      <DialogContent sx={{ pb: 0 }}>
-        <Typography variant="h5" sx={{ fontWeight: 600 }}>
-          {userLanguage === "en" ? currentMenu.title_en : currentMenu.title}
+      <DialogContent sx={{ pt: 2 }}>
+        <Typography variant="h5" sx={{ fontWeight: 600, mb: 1 }}>
+          {userLanguage === "en" ? (currentMenu.title_en || currentMenu.title || "") : (currentMenu.title || "")}
         </Typography>
+        
         {currentMenu.MenuSize && (!menus || menus.length === 1) && (
-          <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
             {userLanguage === "en"
-              ? currentMenu.MenuSize.title_en
-              : currentMenu.MenuSize.title}
+              ? (currentMenu.MenuSize.title_en || currentMenu.MenuSize.title || "")
+              : (currentMenu.MenuSize.title || "")}
           </Typography>
         )}
+        
         {currentMenu.description && (
-          <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
-            {userLanguage === "en" ? currentMenu.description_en : currentMenu.description}
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
+            {userLanguage === "en" ? (currentMenu.description_en || currentMenu.description || "") : (currentMenu.description || "")}
           </Typography>
         )}
+        
+        <Typography variant="h6" color="primary" sx={{ mb: 2, fontWeight: 600 }}>
+          {parseFloat(currentMenu.pricing || "0").toLocaleString("fr", {
+            minimumFractionDigits: 2,
+          })}{" "}
+          €
+        </Typography>
+        
         {currentMenu.Allergy && currentMenu.Allergy.length > 0 && (
-          <Typography
-            variant="body1"
-            color="secondary"
-            sx={{ display: "flex", alignItems: "center", mt: 1 }}
-          >
-            <BugReportIcon sx={{ mr: 1 }} />
-            {currentMenu.Allergy.sort(allergySort)
-              .map((allergy) =>
-                userLanguage === "en" ? allergy.description_en : allergy.description
-              )
-              .join(", ")}
-          </Typography>
+          <Box sx={{ mb: 2, p: 1, bgcolor: 'rgba(244, 67, 54, 0.05)', borderRadius: 1 }}>
+            <Typography
+              variant="body2"
+              color="secondary"
+              sx={{ display: "flex", alignItems: "center" }}
+            >
+              <BugReportIcon sx={{ mr: 1, fontSize: 20 }} />
+              {currentMenu.Allergy.sort(allergySort)
+                .map((allergy) =>
+                  userLanguage === "en" ? (allergy.description_en || allergy.description || "") : (allergy.description || "")
+                )
+                .join(", ")}
+            </Typography>
+          </Box>
         )}
         {menus && menus.length > 1 && (
-          <FormControl component="fieldset" sx={{ mt: 2, width: "100%" }}>
-            <FormLabel component="legend">
-              <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
+          <FormControl component="fieldset" sx={{ mt: 1, mb: 3, width: "100%" }}>
+            <FormLabel component="legend" sx={{ mb: 1 }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                 {checkDictionnary("_TAILLE")}
               </Typography>
             </FormLabel>
-            <RadioGroup
-              aria-label="Size"
-              name="size"
-              value={currentMenuId.toString()}
-              onChange={handleChangeSize}
-            >
-              {menus.map((m) => (
-                <FormControlLabel
-                  key={m.id}
-                  value={m.id.toString()}
-                  control={<Radio color="primary" sx={{ py: 0.5 }} />}
-                  label={
-                    userLanguage === "en"
-                      ? m.MenuSize.title_en
-                      : m.MenuSize.title
-                  }
-                />
-              ))}
-            </RadioGroup>
+            <Box sx={{ border: '1px solid rgba(0, 0, 0, 0.12)', borderRadius: 1, p: 1 }}>
+              <RadioGroup
+                aria-label="Size"
+                name="size"
+                value={currentMenuId.toString()}
+                onChange={handleChangeSize}
+              >
+                {menus.map((m) => (
+                  <FormControlLabel
+                    key={m.id}
+                    value={m.id.toString()}
+                    control={<Radio color="primary" sx={{ py: 0.5 }} />}
+                    label={
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
+                        <Typography variant="body1">
+                          {userLanguage === "en"
+                            ? (m.MenuSize?.title_en || m.MenuSize?.title || "")
+                            : (m.MenuSize?.title || "")}
+                        </Typography>
+                        <Typography variant="body1" color="primary">
+                          {parseFloat(m.pricing || "0").toLocaleString("fr", {
+                            minimumFractionDigits: 2,
+                          })}{" "}
+                          €
+                        </Typography>
+                      </Box>
+                    }
+                    sx={{ width: '100%', margin: 0 }}
+                  />
+                ))}
+              </RadioGroup>
+            </Box>
           </FormControl>
         )}
         {currentMenu.Extra && currentMenu.Extra.length > 0 && (
-          <FormControl component="fieldset" sx={{ mt: 2, width: "100%" }}>
-            <FormLabel component="legend">
-              <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
+          <FormControl component="fieldset" sx={{ mb: 3, width: "100%" }}>
+            <FormLabel component="legend" sx={{ mb: 1 }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                 {checkDictionnary("_SUPPLEMENTS")}
               </Typography>
             </FormLabel>
-            <FormGroup>
-              {currentMenu.Extra.sort(extraSort).map((extra) => (
-                <FormControlLabel
-                  key={extra.id}
-                  control={
-                    <Checkbox
-                      color="primary"
-                      value={extra.id.toString()}
-                      checked={extras.some((x) => x.id === extra.id)}
-                      onChange={(e, checked) => handleChangeExtra(e, checked)}
-                      sx={{ py: 0.5 }}
-                    />
-                  }
-                  label={
-                    <Grid container spacing={2}>
-                      <Grid item xs={8}>
-                        <Typography variant="body1" noWrap>
-                          {userLanguage === "en" ? extra.title_en : extra.title}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={4}>
+            <Box sx={{ border: '1px solid rgba(0, 0, 0, 0.12)', borderRadius: 1, p: 1 }}>
+              <FormGroup>
+                {currentMenu.Extra.sort(extraSort).map((extra) => (
+                  <FormControlLabel
+                    key={extra.id}
+                    control={
+                      <Checkbox
+                        color="primary"
+                        value={extra.id.toString()}
+                        checked={extras.some((x) => x.id === extra.id)}
+                        onChange={(e, checked) => handleChangeExtra(e, checked)}
+                        sx={{ py: 0.5 }}
+                      />
+                    }
+                    label={
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
                         <Typography variant="body1">
-                          {`(+ ${parseFloat(extra.pricing).toLocaleString("fr", {
-                            minimumFractionDigits: 2,
-                          })} €)`}
+                          {userLanguage === "en" ? (extra.title_en || extra.title || "") : (extra.title || "")}
                         </Typography>
-                      </Grid>
-                    </Grid>
-                  }
-                />
-              ))}
-            </FormGroup>
+                        <Typography variant="body1" color="primary">
+                          {`+ ${parseFloat(extra.pricing || "0").toLocaleString("fr", {
+                            minimumFractionDigits: 2,
+                          })} €`}
+                        </Typography>
+                      </Box>
+                    }
+                    sx={{ width: '100%', margin: 0 }}
+                  />
+                ))}
+              </FormGroup>
+            </Box>
           </FormControl>
         )}
-        <Grid container alignItems="center" sx={{ mt: 2 }}>
-          <Grid item xs sx={{ textAlign: "right" }}>
+        <Box sx={{ mb: 3 }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
+            {checkDictionnary("_QUANTITE")}
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              border: '1px solid rgba(0, 0, 0, 0.12)',
+              borderRadius: 1,
+              p: 1
+            }}
+          >
             <IconButton color="primary" onClick={handleRemoveQuantity}>
               <RemoveCircleOutlineIcon />
             </IconButton>
-          </Grid>
-          <Grid item xs sx={{ textAlign: "center" }}>
-            <Typography variant="h5" sx={{ fontWeight: 600 }}>
+            <Typography variant="h6" sx={{ fontWeight: 600, mx: 4 }}>
               {quantity}
             </Typography>
-          </Grid>
-          <Grid item xs sx={{ textAlign: "left" }}>
             <IconButton color="primary" onClick={handleAddQuantity}>
               <AddCircleOutlineIcon />
             </IconButton>
-          </Grid>
-        </Grid>
-        <Box sx={{ textAlign: "center", mt: 2 }}>
-          <Typography variant="body1" color="text.secondary">
-            {checkDictionnary("_PRIX")} :{" "}
+          </Box>
+        </Box>
+        
+        <Box sx={{ textAlign: "center", mb: 3 }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
+            {checkDictionnary("_PRIX_TOTAL")}
+          </Typography>
+          <Typography variant="h5" color="primary" sx={{ fontWeight: 600 }}>
             {totalPricing.toLocaleString("fr", {
               minimumFractionDigits: 2,
             })}{" "}
@@ -254,7 +302,10 @@ export default function AddCart(props: AddCartProps) {
         sx={{
           boxShadow: "0px -3px 6px -2px rgba(0,0,0,0.07)",
           p: 2,
-          display: { xs: "block", md: "flex" },
+          gap: 2,
+          display: { xs: "grid", md: "flex" },
+          gridTemplateRows: "1fr 1fr",
+          justifyContent: "space-between"
         }}
       >
         <Button
@@ -269,11 +320,17 @@ export default function AddCart(props: AddCartProps) {
             })
           }
           fullWidth
-          sx={{ mb: { xs: 2, md: 0 } }}
+          sx={{ height: 48 }}
         >
           {checkDictionnary("_AJOUTER_AU_PANIER")}
         </Button>
-        <Button variant="outlined" color="primary" onClick={onClose} fullWidth>
+        <Button 
+          variant="outlined" 
+          color="primary" 
+          onClick={onClose} 
+          fullWidth
+          sx={{ height: 48 }}
+        >
           {checkDictionnary("_ANNULER")}
         </Button>
       </DialogActions>
