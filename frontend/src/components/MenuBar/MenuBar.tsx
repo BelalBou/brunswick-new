@@ -67,16 +67,15 @@ interface IProps {
 /** Styles en "sx" pour reproduire l'équivalent de vos classes */
 const sxRoot = {
   display: "flex",
-  "@media (minWidth: 960px)": {
-    display: "flex",
-  },
+  flexDirection: "row", 
+  height: "100vh",
+  width: "100%",
+  overflow: "hidden"
 };
 
 const sxAppBar = {
-  marginLeft: drawerWidth,
-  "@media (minWidth: 600px)": {
-    width: `calc(100% - ${drawerWidth}px)`,
-  },
+  zIndex: (theme: Theme) => theme.zIndex.drawer + 1,
+  width: "100%"
 };
 
 const sxMenuButton = {
@@ -87,18 +86,29 @@ const sxMenuButton = {
 };
 
 const sxDrawer = {
-  "@media (minWidth: 600px)": {
+  width: drawerWidth,
+  flexShrink: 0,
+  height: "100%",
+  '& .MuiDrawer-paper': {
     width: drawerWidth,
-    flexShrink: 0,
-  },
+    position: 'relative',
+    height: "100vh"
+  }
+};
+
+const sxContentWrapper: SxProps<Theme> = {
+  display: "flex",
+  flexDirection: "column",
+  flexGrow: 1,
+  height: "100vh",
+  overflow: "auto"
 };
 
 const sxContent: SxProps<Theme> = {
   flexGrow: 1,
   padding: 0,
   display: "flex",
-  minHeight: "100vh",
-  flexDirection: "column",
+  flexDirection: "column"
 };
 
 const sxGrow: SxProps<Theme> = {
@@ -469,71 +479,6 @@ function MenuBar({
     <>
       {renderLoaders()}
       <Box sx={sxRoot}>
-        {/* AppBar */}
-        <AppBar position="fixed" sx={sxAppBar}>
-          <Toolbar>
-            {/* Bouton ouvrant le drawer sur mobile */}
-            <IconButton
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={handleDrawerToggle}
-              sx={sxMenuButton}
-            >
-              <MenuIcon />
-            </IconButton>
-
-            {/* Titre section Desktop */}
-            <Box sx={sxSectionDesktop}>
-              <Typography variant="h6" color="inherit">
-                {title}
-              </Typography>
-            </Box>
-
-            {/* Titre section Mobile */}
-            <Box sx={sxSectionMobile}>
-              {(!search || !onSearch) && (
-                <Typography variant="h6" color="inherit">
-                  {title}
-                </Typography>
-              )}
-            </Box>
-
-            {/* Barre de recherche si nécessaire */}
-            {search && onSearch && (
-              <SearchBar
-                onSearch={onSearch}
-                checkDictionnary={checkDictionnary}
-              />
-            )}
-
-            <Box sx={sxGrow} />
-
-            {/* sectionDesktop : icônes badge + user */}
-            <Box sx={sxSectionDesktop}>
-              {renderBadge()}
-              <IconButton
-                aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
-                color="inherit"
-              >
-                <AccountCircleIcon />
-              </IconButton>
-            </Box>
-
-            {/* sectionMobile : idem */}
-            <Box sx={sxSectionMobile}>
-              {renderBadge()}
-              <IconButton
-                aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
-                color="inherit"
-              >
-                <AccountCircleIcon />
-              </IconButton>
-            </Box>
-          </Toolbar>
-        </AppBar>
-
         {/* Drawer (Menu latéral) */}
         <Box component="nav" sx={sxDrawer}>
           {/* 
@@ -566,6 +511,7 @@ function MenuBar({
               sx={{
                 '& .MuiDrawer-paper': {
                   width: drawerWidth,
+                  position: 'static'
                 }
               }}
             >
@@ -574,11 +520,77 @@ function MenuBar({
           </Hidden>
         </Box>
 
-        {/* Contenu principal */}
-        <Box component="main" sx={sxContent}>
-          {/* Pour séparer du haut de la page, on insère l'équivalent de theme.mixins.toolbar */}
-          <Box sx={sxToolbarPlaceholder} />
-          {children}
+        {/* Contenu principal avec AppBar et enfants */}
+        <Box component="main" sx={sxContentWrapper}>
+          {/* AppBar */}
+          <AppBar position="static" sx={sxAppBar}>
+            <Toolbar>
+              {/* Bouton ouvrant le drawer sur mobile */}
+              <IconButton
+                color="inherit"
+                aria-label="Open drawer"
+                onClick={handleDrawerToggle}
+                sx={sxMenuButton}
+              >
+                <MenuIcon />
+              </IconButton>
+
+              {/* Titre section Desktop */}
+              <Box sx={sxSectionDesktop}>
+                <Typography variant="h6" color="inherit">
+                  {title}
+                </Typography>
+              </Box>
+
+              {/* Titre section Mobile */}
+              <Box sx={sxSectionMobile}>
+                {(!search || !onSearch) && (
+                  <Typography variant="h6" color="inherit">
+                    {title}
+                  </Typography>
+                )}
+              </Box>
+
+              {/* Barre de recherche si nécessaire */}
+              {search && onSearch && (
+                <SearchBar
+                  onSearch={onSearch}
+                  checkDictionnary={checkDictionnary}
+                />
+              )}
+
+              <Box sx={sxGrow} />
+
+              {/* sectionDesktop : icônes badge + user */}
+              <Box sx={sxSectionDesktop}>
+                {renderBadge()}
+                <IconButton
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="inherit"
+                >
+                  <AccountCircleIcon />
+                </IconButton>
+              </Box>
+
+              {/* sectionMobile : idem */}
+              <Box sx={sxSectionMobile}>
+                {renderBadge()}
+                <IconButton
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="inherit"
+                >
+                  <AccountCircleIcon />
+                </IconButton>
+              </Box>
+            </Toolbar>
+          </AppBar>
+
+          {/* Contenu enfant */}
+          <Box sx={sxContent}>
+            {children}
+          </Box>
         </Box>
         {/* Menu profil */}
         {renderMenuProfile()}
