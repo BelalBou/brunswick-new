@@ -19,6 +19,9 @@ Route::post('auth/login', [AuthController::class, 'login']);
 Route::post('auth/reset-password', [AuthController::class, 'resetPassword']);
 Route::post('auth/finalize-registration', [AuthController::class, 'finalizeRegistration']);
 
+// Route publique pour la liste des fournisseurs (sans informations sensibles)
+Route::get('suppliers/public', [SupplierController::class, 'publicList']);
+
 // Routes protégées
 Route::middleware(['auth:sanctum'])->group(function () {
     // Vérification de la validité du token
@@ -123,6 +126,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Routes accessibles par tous les utilisateurs authentifiés
     Route::get('menus', [MenuController::class, 'index']);
     Route::get('menus/{id}', [MenuController::class, 'show']);
+    Route::get('menus/list_supplier/{id}', [MenuController::class, 'listBySupplier']);
     Route::get('dictionary/translations/{lang}', [DictionaryController::class, 'getTranslations']);
     Route::get('settings/by-lang/{lang}', [SettingController::class, 'getSettingsByLang']);
 
@@ -153,7 +157,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
 
         Route::middleware(['role:customer'])->group(function () {
-            Route::get('/list-customer', [OrderController::class, 'listForCustomer']);
+            Route::post('/list-customer', [OrderController::class, 'listForCustomer']);
         });
 
         Route::middleware(['role:supplier'])->group(function () {

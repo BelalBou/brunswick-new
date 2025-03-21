@@ -5,8 +5,7 @@ import { setSupplierList } from "../slices/supplierSlice";
 
 export const getSuppliers = () => async (dispatch: AppDispatch) => {
   try {
-    // On suppose que l'API renvoie la liste des fournisseurs directement dans response.data
-    const response = await axios.get("/api/suppliers/list/");
+    const response = await axios.get("/api/suppliers/public");
     dispatch(setSupplierList(response.data));
   } catch (error: any) {
     console.error("Error fetching suppliers:", error);

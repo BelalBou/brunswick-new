@@ -369,7 +369,7 @@ export const getOrdersForCustomer = (limit = 0, offset = 0) => async (dispatch: 
   dispatch(setListError(""));
 
   try {
-    const response = await axios.post(`/api/orders/list_customer`, { limit, offset });
+    const response = await axios.post(`/api/orders/list-customer`, { limit, offset });
     dispatch(setOrderListTotalCount(response.data.totalCount || 0));
     dispatch(setOrderList(response.data.result));
 
@@ -399,7 +399,7 @@ export const getOrdersForCustomerSpread = (limit = 0, offset = 0) => async (disp
   dispatch(setListError(""));
 
   try {
-    const response = await axios.post(`/api/orders/list_customer`, { limit, offset });
+    const response = await axios.post(`/api/orders/list-customer`, { limit, offset });
     dispatch(setOrderListTotalCount(response.data.totalCount || 0));
     // Au lieu de setOrderList, on veut "spread" -> concat
     dispatch(setOrderListSpread(response.data.result));
@@ -430,7 +430,7 @@ export const getOrdersTotalCountForCustomer = (limit = 0, offset = 0) => async (
   dispatch(setListError(""));
 
   try {
-    const response = await axios.post(`/api/orders/list_customer`, { limit, offset });
+    const response = await axios.post(`/api/orders/list-customer`, { limit, offset });
     dispatch(setOrderListTotalCount(response.data.totalCount || 0));
 
     dispatch(getOrdersTotalCountForCustomerDispatch({ payload: { data: response.data } }));

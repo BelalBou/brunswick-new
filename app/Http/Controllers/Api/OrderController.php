@@ -615,29 +615,10 @@ class OrderController extends Controller
     }
 
     /**
-     * Liste les commandes d'un client
+     * Liste les commandes d'un client (alias pour listByCustomer)
      */
     public function listForCustomer(Request $request)
     {
-        try {
-            $user = $request->user();
-            
-            if (!$user || $user->type !== 'customer') {
-                return response()->json([
-                    'error' => 'Accès non autorisé'
-                ], 403);
-            }
-
-            $orders = Order::where('user_id', $user->id)
-                ->where('deleted', false)
-                ->orderBy('created_at', 'desc')
-                ->get();
-
-            return response()->json($orders);
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Erreur lors de la récupération des commandes'
-            ], 500);
-        }
+        return $this->listByCustomer($request);
     }
 }

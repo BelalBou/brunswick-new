@@ -37,13 +37,19 @@ class MenuController extends Controller
             ], 400);
         }
 
-        $menus = Menu::with(['supplier', 'category', 'allergies', 'menuSize', 'extras'])
-            ->where('deleted', false)
-            ->where('supplier_id', $id)
-            ->orderBy('title', 'ASC')
-            ->get();
+        try {
+            $menus = Menu::with(['supplier', 'category', 'allergies', 'menuSize', 'extras'])
+                ->where('deleted', false)
+                ->where('supplier_id', $id)
+                ->orderBy('title', 'ASC')
+                ->get();
 
-        return response()->json($menus);
+            return response()->json($menus);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

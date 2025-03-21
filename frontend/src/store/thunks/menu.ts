@@ -211,28 +211,25 @@ function getMenusSupplierDispatch(res: any) {
   };
 }
 
-export const getMenusSupplier = (id: number) => (dispatch: Function) => {
+export const getMenusSupplier = (id: number) => async (dispatch: Function) => {
   dispatch(setListPending(true));
   dispatch(setListSuccess(false));
   dispatch(setListError(""));
 
-  // On lance la requête
-  const menuList = axios.get(`/api/menus/list_supplier/${id}`);
-  
-  // On dispatch la nouvelle action setMenuList
-  dispatch(
-    menuList.then((response) => {
-      // Màj store
-      dispatch(setMenuList(response.data));
-      // On appelle la suite
-      return { payload: { data: response.data } };
-    })
-  )
-    .then((res: any) => dispatch(getMenusSupplierDispatch(res)))
-    .catch((err: any) => dispatch(setListError(String(err))))
-    .finally(() => {
-      dispatch(setListPending(false));
-    });
+  try {
+    // On lance la requête
+    const response = await axios.get(`/api/menus/list_supplier/${id}`);
+    
+    // Màj store
+    dispatch(setMenuList(response.data));
+    
+    // On appelle la suite
+    dispatch(getMenusSupplierDispatch({ payload: { data: response.data } }));
+  } catch (err: any) {
+    dispatch(setListError(String(err)));
+  } finally {
+    dispatch(setListPending(false));
+  }
 };
 
 /** ---------------------------

@@ -196,4 +196,17 @@ class SupplierController extends Controller
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
+
+    /**
+     * Liste publique des fournisseurs (sans informations sensibles)
+     */
+    public function publicList()
+    {
+        $suppliers = Supplier::where('deleted', false)
+            ->whereRaw('now() NOT BETWEEN away_start AND away_end')
+            ->orderBy('name', 'ASC')
+            ->get(['id', 'name']);
+
+        return response()->json($suppliers);
+    }
 }

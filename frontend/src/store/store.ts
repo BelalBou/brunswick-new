@@ -42,7 +42,10 @@ const store = configureStore({
     serverTime: serverTimeReducer,
     setting: settingReducer,
     supplier: supplierReducer,
-  }
+  },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: false
+  })
 });
 
 // Export du type du dispatch si besoin
