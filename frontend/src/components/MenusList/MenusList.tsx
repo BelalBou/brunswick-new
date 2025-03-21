@@ -44,7 +44,11 @@ export default function MenusList({
               <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                 <CardActionArea onClick={() => onOpenAdd(menu)} sx={{ height: '100%' }}>
                   <Box sx={{ display: 'flex', padding: 2 }}>
-                    <Box sx={{ flex: '1 1 auto' }}>
+                    <Box sx={{ 
+                      flex: '1 1 auto', 
+                      overflow: 'hidden',
+                      maxWidth: 'calc(100% - 110px)' // Réserver de l'espace pour l'image
+                    }}>
                       <Typography variant="subtitle1" component="div" gutterBottom noWrap>
                         {menu.title}
                       </Typography>
@@ -54,6 +58,7 @@ export default function MenusList({
                           variant="body2"
                           color="text.secondary"
                           sx={{ mt: 1 }}
+                          noWrap
                         >
                           {userLanguage === "en"
                             ? menu.MenuSize.title_en
@@ -64,8 +69,14 @@ export default function MenusList({
                       <Typography
                         variant="body2"
                         color="text.secondary"
-                        sx={{ mt: 1 }}
-                        noWrap
+                        sx={{ 
+                          mt: 1,
+                          display: '-webkit-box',
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: 'vertical',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis'
+                        }}
                       >
                         {menu.description || ""}
                       </Typography>
@@ -74,6 +85,7 @@ export default function MenusList({
                         variant="subtitle1"
                         color="primary"
                         sx={{ fontWeight: 550, mt: 1 }}
+                        noWrap
                       >
                         {parseFloat(menu.pricing).toLocaleString("fr", {
                           minimumFractionDigits: 2,
@@ -88,7 +100,9 @@ export default function MenusList({
                         width: 96, 
                         height: 96, 
                         borderRadius: 1,
-                        objectFit: 'cover'
+                        objectFit: 'cover',
+                        minWidth: 96, // S'assurer que l'image ne rétrécit pas
+                        ml: 1 // Un peu de marge à gauche
                       }}
                       image={menu.picture ? `${S3_BASE_URL}/${menu.picture}` : placeHolderIcon}
                       alt={menu.title}
