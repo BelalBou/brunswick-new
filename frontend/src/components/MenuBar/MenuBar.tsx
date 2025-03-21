@@ -65,36 +65,33 @@ interface IProps {
 }
 
 /** Styles en "sx" pour reproduire l'équivalent de vos classes */
-const sxRoot: SxProps<Theme> = (theme) => ({
-  // Anciennement "root" + [theme.breakpoints.up("md")]: { display: "flex" }
-  [theme.breakpoints.up("md")]: {
+const sxRoot = {
+  display: "flex",
+  "@media (minWidth: 960px)": {
     display: "flex",
   },
-});
+};
 
-const sxAppBar: SxProps<Theme> = (theme) => ({
-  // Anciennement appBar
+const sxAppBar = {
   marginLeft: drawerWidth,
-  [theme.breakpoints.up("sm")]: {
+  "@media (minWidth: 600px)": {
     width: `calc(100% - ${drawerWidth}px)`,
   },
-});
+};
 
-const sxMenuButton: SxProps<Theme> = (theme) => ({
-  // Anciennement menuButton
-  marginRight: 2, // (theme.spacing(2)) => 16 px
-  [theme.breakpoints.up("sm")]: {
+const sxMenuButton = {
+  marginRight: 2,
+  "@media (minWidth: 600px)": {
     display: "none",
   },
-});
+};
 
-const sxDrawer: SxProps<Theme> = (theme) => ({
-  // Anciennement drawer
-  [theme.breakpoints.up("sm")]: {
+const sxDrawer = {
+  "@media (minWidth: 600px)": {
     width: drawerWidth,
     flexShrink: 0,
   },
-});
+};
 
 const sxContent: SxProps<Theme> = {
   flexGrow: 1,
@@ -108,19 +105,19 @@ const sxGrow: SxProps<Theme> = {
   flexGrow: 1,
 };
 
-const sxSectionDesktop: SxProps<Theme> = (theme) => ({
+const sxSectionDesktop = {
   display: "none",
-  [theme.breakpoints.up("md")]: {
+  "@media (minWidth: 960px)": {
     display: "flex",
   },
-});
+};
 
-const sxSectionMobile: SxProps<Theme> = (theme) => ({
+const sxSectionMobile = {
   display: "flex",
-  [theme.breakpoints.up("md")]: {
+  "@media (minWidth: 960px)": {
     display: "none",
   },
-});
+};
 
 /** "toolbar" : on réplique theme.mixins.toolbar */
 const sxToolbarPlaceholder: SxProps<Theme> = (theme) => ({

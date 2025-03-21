@@ -186,4 +186,14 @@ class SupplierController extends Controller
             ]));
         }
     }
+
+    public function show($id)
+    {
+        try {
+            $supplier = Supplier::findOrFail($id);
+            return response()->json($supplier);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
 }

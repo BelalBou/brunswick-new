@@ -19,6 +19,9 @@ Route::post('auth/login', [AuthController::class, 'login']);
 Route::post('auth/reset-password', [AuthController::class, 'resetPassword']);
 Route::post('auth/finalize-registration', [AuthController::class, 'finalizeRegistration']);
 
+// Vérification de la validité du token
+Route::get('users/check_validity', [UserController::class, 'check_validity']);
+
 // Routes protégées
 Route::middleware('auth:sanctum')->group(function () {
     // Déconnexion
@@ -178,4 +181,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/list', [SettingController::class, 'index']);
         Route::put('/edit/{id}', [SettingController::class, 'update'])->middleware('role:administrator');
     });
+
+    Route::get('users/{id}', [UserController::class, 'show']);
 }); 

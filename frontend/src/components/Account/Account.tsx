@@ -17,17 +17,18 @@ import MenuBar from "../MenuBar/MenuBar";
 import Footer from "../Footer/Footer";
 import checkDictionnaryFn from "../../utils/CheckDictionnary/CheckDictionnary";
 import userTypes from "../../utils/UserTypes/UserTypes";
+import { useTheme } from '@mui/material/styles';
 
 // Définissez ici vos styles "sx"
 const sxMain = { flex: 1 };
-const sxLayout = {
+const sxLayout = (theme: any) => ({
   width: "auto",
   mx: 3,
-  "@media (min-width: 448px)": {
+  [theme.breakpoints.up('sm')]: {
     width: 400,
     mx: "auto",
   },
-};
+});
 const sxCardGrid = (theme: any) => ({
   p: 0,
   [theme.breakpoints.up("md")]: {
@@ -67,6 +68,7 @@ export interface AccountProps {
 }
 
 export default function Account(props: AccountProps) {
+  const theme = useTheme();
   const {
     isLoginSuccess,
     isListPending,
@@ -133,7 +135,7 @@ export default function Account(props: AccountProps) {
       checkDictionnary={checkDictionnary}
     >
       <Box component="main" sx={sxMain}>
-        <Box sx={{ ...sxLayout, ...sxCardGrid }}>
+        <Box sx={{ ...sxLayout(theme), ...sxCardGrid }}>
           <Box sx={sxHeroUnit}>
             <Grid container sx={sxGridContainer}>
               <Grid item sx={sxGridItem}>

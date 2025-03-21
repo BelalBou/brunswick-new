@@ -26,38 +26,43 @@ import ICart from "../../interfaces/ICart";
 import ISupplier from "../../interfaces/ISupplier";
 
 // Styles "sx"
-const sxHeroUnit = (theme: any) => ({
-  backgroundColor: theme.palette.background.paper,
+const sxHeroUnit = {
+  backgroundColor: "background.paper",
   borderRadius: ".625rem",
-});
+};
 const sxLayout = {
   width: "auto",
   margin: "0 auto",
 };
-const sxCardGrid = (theme: any) => ({
+const sxCardGrid = {
   p: 0,
-  [theme.breakpoints.up("md")]: {
-    p: theme.spacing(4),
+  "@media (minWidth: 960px)": {
+    p: 4,
   },
-});
-const sxListSubHeader = (theme: any) => ({
-  mt: theme.spacing(6),
-  mb: theme.spacing(2),
-});
+};
+const sxListSubHeader = {
+  mt: 6,
+  mb: 2,
+};
 const sxH5 = { fontWeight: 600 };
-const sxSectionDesktop = (theme: any) => ({
+const sxSectionDesktop = {
   display: "none",
-  [theme.breakpoints.up("md")]: {
+  "@media (minWidth: 960px)": {
     display: "flex",
   },
-});
-const sxSectionMobile = (theme: any) => ({
+};
+const sxSectionMobile = {
   display: "flex",
-  [theme.breakpoints.up("md")]: {
+  "@media (minWidth: 960px)": {
     display: "none",
   },
-});
-const sxMain = { flex: 1 };
+};
+const sxMain = {
+  flex: 1,
+  "@media (minWidth: 960px)": {
+    marginLeft: 30,
+  },
+};
 
 interface MenusProps {
   isLoginSuccess: boolean;
@@ -268,8 +273,8 @@ const Menus: React.FC<MenusProps> = (props) => {
       )}
 
       <Box component="main" sx={sxMain}>
-        <div style={{ ...sxLayout, ...sxCardGrid(theme) }}>
-          <div style={sxHeroUnit(theme)}>
+        <div style={{ ...sxLayout, ...sxCardGrid }}>
+          <div style={sxHeroUnit}>
             <Tabs
               value={selectedSupplier}
               indicatorColor="primary"
@@ -325,14 +330,14 @@ const Menus: React.FC<MenusProps> = (props) => {
                           (menu) => menu.category_id === category.id
                         ).length > 0 && (
                           <>
-                            <ListSubheader sx={sxListSubHeader(theme)}>
+                            <ListSubheader sx={sxListSubHeader}>
                               <Typography variant="h5" sx={sxH5}>
                                 {userLanguage === "en"
                                   ? category.title_en
                                   : category.title}
                               </Typography>
                             </ListSubheader>
-                            <Box sx={sxSectionDesktop(theme)}>
+                            <Box sx={sxSectionDesktop}>
                               <MenuCard
                                 userLanguage={userLanguage}
                                 menuList={menuList
@@ -353,7 +358,7 @@ const Menus: React.FC<MenusProps> = (props) => {
                                 onOpenAdd={handleOpenAdd}
                               />
                             </Box>
-                            <Box sx={sxSectionMobile(theme)}>
+                            <Box sx={sxSectionMobile}>
                               <MenusList
                                 userLanguage={userLanguage}
                                 menuList={menuList

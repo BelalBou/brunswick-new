@@ -28,6 +28,7 @@ import IExtra from "../../interfaces/IExtra";
 import extraSort from "../../utils/ExtraSort/ExtraSort";
 import { allergySort } from "../../utils/AllergySort/AllergySort";
 import { S3_BASE_URL } from "../../utils/S3Utils/S3Utils";
+import { useTheme } from '@mui/material/styles';
 
 interface AddCartProps {
   menu: IMenu;
@@ -39,6 +40,7 @@ interface AddCartProps {
 }
 
 export default function AddCart(props: AddCartProps) {
+  const theme = useTheme();
   const { menu, menus, userLanguage, onAdd, onClose, checkDictionnary } = props;
 
   const [currentMenu, setCurrentMenu] = useState<IMenu>(menu);
@@ -100,7 +102,7 @@ export default function AddCart(props: AddCartProps) {
       sx={{
         "& .MuiDialog-paperScrollBody": {
           m: 3,
-          "@media (min-width: md)": {
+          [theme.breakpoints.up('md')]: {
             m: 6,
             maxWidth: "400px",
           },

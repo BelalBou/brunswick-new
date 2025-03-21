@@ -3,6 +3,7 @@
 import React, { useState, useEffect, KeyboardEvent } from "react";
 import { useParams, Navigate } from "react-router-dom";
 import emailValidator from "email-validator";
+import { useTheme } from '@mui/material/styles';
 
 import {
   Avatar,
@@ -52,19 +53,17 @@ interface IProps {
  * Reproduisent le même rendu que dans l'ancien code 
  * (margin, widths, spacing).
  */
-const sxMain = {
+const sxMain = (theme: any) => ({
   width: "auto",
   display: "block",
-  marginLeft: (theme: any) => theme.spacing(3),
-  marginRight: (theme: any) => theme.spacing(3),
-
-  // Approximatif : min-width 400 + theme.spacing(3)*2 = 400 + 48 = 448
-  "@media (min-width:448px)": {
+  marginLeft: theme.spacing(3),
+  marginRight: theme.spacing(3),
+  [theme.breakpoints.up('sm')]: {
     width: 400,
     marginLeft: "auto",
     marginRight: "auto",
   },
-};
+});
 
 const sxPaper = (theme: any) => ({
   marginTop: theme.spacing(8),
@@ -89,6 +88,7 @@ const sxSubmit = (theme: any) => ({
 });
 
 export default function Login(props: IProps) {
+  const theme = useTheme();
   const {
     isLoginPending,
     isLoginSuccess,
@@ -276,12 +276,12 @@ export default function Login(props: IProps) {
         />
       )}
 
-      <Box component="main" sx={sxMain}>
-        <Paper sx={sxPaper}>
+      <Box component="main" sx={sxMain(theme)}>
+        <Paper sx={sxPaper(theme)}>
           {/* On n'affiche le formulaire que si la liste de dicos n'est pas en cours (ou tout autre condition) */}
           {!isListPending && (
             <>
-              <Avatar sx={sxAvatar}>
+              <Avatar sx={sxAvatar(theme)}>
                 <LockOutlinedIcon />
               </Avatar>
               <Typography component="h1" variant="h5" textAlign="center">
@@ -289,7 +289,7 @@ export default function Login(props: IProps) {
               </Typography>
 
               {/* Formulaire */}
-              <Box component="form" sx={sxForm}>
+              <Box component="form" sx={sxForm(theme)}>
                 {/* mode "login" */}
                 {!register && (
                   <>
@@ -429,7 +429,7 @@ export default function Login(props: IProps) {
                     fullWidth
                     variant="contained"
                     color="primary"
-                    sx={sxSubmit}
+                    sx={sxSubmit(theme)}
                     onClick={handleLogin}
                   >
                     {checkDictionnary("_SE_CONNECTER")}
@@ -442,7 +442,7 @@ export default function Login(props: IProps) {
                     fullWidth
                     variant="contained"
                     color="primary"
-                    sx={sxSubmit}
+                    sx={sxSubmit(theme)}
                     onClick={handleResetPassword}
                   >
                     {checkDictionnary("_REINITIALISER")}
@@ -455,7 +455,7 @@ export default function Login(props: IProps) {
                     fullWidth
                     variant="contained"
                     color="primary"
-                    sx={sxSubmit}
+                    sx={sxSubmit(theme)}
                     onClick={handleRegister}
                   >
                     {checkDictionnary("_VALIDER")}

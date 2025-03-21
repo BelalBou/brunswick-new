@@ -1,5 +1,7 @@
 import { Provider } from "react-redux";
+import { ThemeProvider } from '@mui/material/styles';
 import store from "./store/store";
+import theme from "./theme/theme";
 
 // On importe le composant MyRoutes (Routes personnalisées)
 import MyRoutes from "./Routes";
@@ -64,8 +66,10 @@ function App() {
 
   return (
     <Provider store={store}>
-      {/* On affiche MyRoutes (notre composant de routes) */}
-      <MyRoutes />
+      <ThemeProvider theme={theme}>
+        {/* On affiche MyRoutes (notre composant de routes) */}
+        <MyRoutes />
+      </ThemeProvider>
     </Provider>
   );
 }

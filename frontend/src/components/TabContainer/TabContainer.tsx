@@ -10,6 +10,13 @@ interface TabContainerProps {
 
 export default function TabContainer({ children, dir }: TabContainerProps) {
   const theme = useTheme();
+  const sxContainer = {
+    padding: "16px",
+    "@media (minWidth: 960px)": {
+      paddingLeft: "32px",
+      paddingRight: "32px",
+    },
+  };
   return (
     <Typography
       component="div"
@@ -17,10 +24,7 @@ export default function TabContainer({ children, dir }: TabContainerProps) {
       sx={{
         pt: 0,
         pb: theme.spacing(2),
-        [theme.breakpoints.up("md")]: {
-          pl: theme.spacing(2),
-          pr: theme.spacing(2),
-        },
+        ...sxContainer,
       }}
     >
       {children}

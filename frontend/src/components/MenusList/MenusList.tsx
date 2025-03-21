@@ -29,8 +29,27 @@ export default function MenusList({
     menu.menu_size_id ? menu.menu_size_id === menuList[0].menu_size_id : true
   );
 
+  const sxList = {
+    width: "100%",
+    "@media (minWidth: 600px)": {
+      width: "100%",
+    },
+  };
+
+  const sxListItem = {
+    "@media (minWidth: 600px)": {
+      padding: "16px",
+    },
+  };
+
+  const sxListItemText = {
+    "@media (minWidth: 600px)": {
+      marginRight: "16px",
+    },
+  };
+
   return (
-    <List sx={{ width: "100%" }}>
+    <List sx={sxList}>
       {filteredMenuList.map((menu) => (
         <Fragment key={menu.id}>
           {menuList.filter((x) => x.title === menu.title).length > 1 ? (
