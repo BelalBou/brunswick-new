@@ -245,3 +245,14 @@ function checkUserValidityDispatch(res: any) {
       dispatch(setListError(String(err)));
     }
   };
+
+export const editUserLanguage = (language: string) => (dispatch: AppDispatch) => {
+  dispatch(setUserLanguage(language));
+  // Mettre à jour le localStorage
+  const storedUser = localStorage.getItem("user");
+  if (storedUser) {
+    const userObj = JSON.parse(storedUser);
+    userObj.language = language;
+    localStorage.setItem("user", JSON.stringify(userObj));
+  }
+};

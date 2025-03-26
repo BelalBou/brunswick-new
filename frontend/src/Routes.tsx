@@ -18,7 +18,7 @@ import Menus from "./containers/MenusContainer";
 // import ManageExtras from "./containers/ManageExtrasContainer";
 // import ManageMenus from "./containers/ManageMenusContainer";
 // import ManageSettings from "./containers/ManageSettingsContainer";
-// import Account from "./containers/AccountContainer";
+import Account from "./containers/AccountContainer";
 
 const theme = createTheme({
   palette: {
@@ -56,7 +56,7 @@ function MyRoutes() {
           <Route path="/menus-carried-away" element={<MenusCarriedAway />} /> */}
 
           {/* Account */}
-          {/* <Route path="/account" element={<Account />} /> */}
+          <Route path="/account" element={<Account />} />
 
           {/* Gestion */}
           {/* <Route path="/manage-users" element={<ManageUsers />} />
