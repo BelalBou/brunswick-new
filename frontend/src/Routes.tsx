@@ -17,7 +17,7 @@ import Cart from "./containers/CartContainer";
 // import ManageAllergies from "./containers/ManageAllergiesContainer";
 // import ManageExtras from "./containers/ManageExtrasContainer";
 // import ManageMenus from "./containers/ManageMenusContainer";
-// import ManageSettings from "./containers/ManageSettingsContainer";
+import ManageSettings from "./containers/ManageSettingsContainer";
 import Account from "./containers/AccountContainer";
 
 const theme = createTheme({
@@ -48,7 +48,7 @@ function MyRoutes() {
 
           {/* Cart */}
           <Route path="/cart" element={<Cart />} />
-          {/* <Route path="/cart/:id" element={<Cart />} /> */}
+          <Route path="/cart/:id" element={<Cart />} />
 
           {/* Orders */}
           {/* <Route path="/orders" element={<Orders />} />
@@ -65,8 +65,8 @@ function MyRoutes() {
           <Route path="/manage-menu-sizes" element={<ManageMenuSizes />} />
           <Route path="/manage-allergies" element={<ManageAllergies />} />
           <Route path="/manage-extras" element={<ManageExtras />} />
-          <Route path="/manage-menus" element={<ManageMenus />} />
-          <Route path="/manage-settings" element={<ManageSettings />} /> */}
+          <Route path="/manage-menus" element={<ManageMenus />} />*/}
+          <Route path="/manage-settings" element={<ManageSettings />} /> 
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

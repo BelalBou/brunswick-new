@@ -75,16 +75,14 @@ export default function AddCart(props: AddCartProps) {
     checked: boolean
   ) => {
     const extraId = parseInt(event.target.value);
-    let updatedExtras = [...extras];
     if (checked) {
       const extraItem = currentMenu.Extra.find((x) => x.id === extraId);
       if (extraItem) {
-        updatedExtras.push(extraItem);
+        setExtras(prev => [...prev, { ...extraItem }]);
       }
     } else {
-      updatedExtras = updatedExtras.filter((x) => x.id !== extraId);
+      setExtras(prev => prev.filter((x) => x.id !== extraId));
     }
-    setExtras(updatedExtras);
   };
 
   const calculateTotalExtras = (): number =>

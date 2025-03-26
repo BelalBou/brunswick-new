@@ -183,9 +183,12 @@ const Menus: React.FC<MenusProps> = (props) => {
     let shoppingCartCopy = [...cartList];
     const exist = shoppingCartCopy.filter((x) => x.menu.id === item.menu.id);
     if (exist.length > 0) {
-      exist[0].quantity += item.quantity;
+      const updatedItem = {
+        ...exist[0],
+        quantity: exist[0].quantity + item.quantity
+      };
       shoppingCartCopy = shoppingCartCopy.filter((x) => x.menu.id !== item.menu.id);
-      shoppingCartCopy.push(exist[0]);
+      shoppingCartCopy.push(updatedItem);
     } else {
       shoppingCartCopy.push(item);
     }
