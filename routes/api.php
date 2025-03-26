@@ -30,6 +30,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Déconnexion
     Route::post('auth/logout', [AuthController::class, 'logout']);
 
+    // Routes pour les settings
+    Route::prefix('settings')->group(function () {
+        Route::get('/list', [SettingController::class, 'index']);
+        Route::get('/{id}', [SettingController::class, 'show']);
+        Route::put('/{id}', [SettingController::class, 'update']);
+    });
+
     // Routes pour administrateur uniquement
     Route::middleware(['auth:sanctum', 'role:administrator'])->group(function () {
         // Gestion des utilisateurs
