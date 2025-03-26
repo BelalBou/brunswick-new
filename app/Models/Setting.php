@@ -19,17 +19,15 @@ class Setting extends Model
         'email_supplier_cc',
         'email_vendor_cc',
         'language',
-        'deleted',
         'description',
         'created_at',
         'updated_at'
     ];
 
     protected $casts = [
-        'time_limit' => 'integer',
+        'time_limit' => 'string',
         'start_period' => 'datetime',
         'end_period' => 'datetime',
-        'deleted' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

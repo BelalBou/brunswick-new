@@ -43,13 +43,13 @@ export const editSetting = (
   dispatch(setEditError(""));
 
   try {
-    const res = await axios.put(`/api/settings/edit/${id}`, {
-      timeLimit,
-      startPeriod,
-      endPeriod,
-      emailOrderCc,
-      emailSupplierCc,
-      emailVendorCc
+    const res = await axios.put(`/api/settings/${id}`, {
+      time_limit: timeLimit,
+      start_period: startPeriod,
+      end_period: endPeriod,
+      email_order_cc: emailOrderCc,
+      email_supplier_cc: emailSupplierCc,
+      email_vendor_cc: emailVendorCc
     });
     dispatch(editSettingDispatch(res));
   } catch (err: any) {
