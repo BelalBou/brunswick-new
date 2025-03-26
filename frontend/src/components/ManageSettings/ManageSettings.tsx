@@ -84,6 +84,12 @@ const ManageSettings: React.FC<ManageSettingsProps> = ({
     }
   }, [userToken]);
 
+  useEffect(() => {
+    if (isEditSuccess && edited) {
+      refresh();
+    }
+  }, [isEditSuccess, edited]);
+
   const refresh = () => {
     if (userType === "administrator") {
       dispatch(getDictionnaries());
@@ -144,14 +150,10 @@ const ManageSettings: React.FC<ManageSettingsProps> = ({
   const handleTableRows = () => {
     if (settingList && settingList.length > 0) {
       return settingList.map((setting: ISetting) => {
-        // Convertir les dates en jours de la semaine (0-6)
-        const startDay = moment(setting.start_period).day();
-        const endDay = moment(setting.end_period).day();
-        
         return {
-          timeLimit: setting.time_limit || "11:00",
-          startPeriod: moment.weekdays(true)[startDay],
-          endPeriod: moment.weekdays(true)[endDay],
+          timeLimit: setting.time_limit ? moment(setting.time_limit, 'HH:mm:ss').format('HH:mm') : "11:00",
+          startPeriod: moment.weekdays(true)[setting.start_period],
+          endPeriod: moment.weekdays(true)[setting.end_period],
           emailOrderCc: setting.email_order_cc,
           emailSupplierCc: setting.email_supplier_cc,
           emailVendorCc: setting.email_vendor_cc,
@@ -162,9 +164,9 @@ const ManageSettings: React.FC<ManageSettingsProps> = ({
                 onClick={() =>
                   handleOpenEdit(
                     setting.id,
-                    setting.time_limit || "11:00",
-                    startDay,
-                    endDay,
+                    setting.time_limit ? moment(setting.time_limit, 'HH:mm:ss').format('HH:mm') : "11:00",
+                    setting.start_period,
+                    setting.end_period,
                     setting.email_order_cc,
                     setting.email_supplier_cc,
                     setting.email_vendor_cc
@@ -192,8 +194,8 @@ const ManageSettings: React.FC<ManageSettingsProps> = ({
   ) => {
     setEditId(id);
     setEditTimeLimit(timeLimit);
-    setEditStartPeriod(Number(startPeriod) >= 0 && Number(startPeriod) <= 6 ? Number(startPeriod) : 0);
-    setEditEndPeriod(Number(endPeriod) >= 0 && Number(endPeriod) <= 6 ? Number(endPeriod) : 6);
+    setEditStartPeriod(startPeriod);
+    setEditEndPeriod(endPeriod);
     setEditEmailOrderCc(emailOrderCc);
     setEditEmailSupplierCc(emailSupplierCc);
     setEditEmailVendorCc(emailVendorCc);
@@ -217,8 +219,8 @@ const ManageSettings: React.FC<ManageSettingsProps> = ({
         editSetting(
           editId,
           timeLimit,
-          startPeriod.toString(),
-          endPeriod.toString(),
+          startPeriod,
+          endPeriod,
           emailOrderCc,
           emailSupplierCc,
           emailVendorCc

@@ -17,12 +17,13 @@ class Setting extends Model
         'settings',
         'email_order_cc',
         'start_period',
-        'email_vendor_cc'
+        'email_vendor_cc',
+        'time_limit'
     ];
 
     protected $casts = [
-        'start_period' => 'datetime',
-        'end_period' => 'datetime',
+        'start_period' => 'integer',
+        'end_period' => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

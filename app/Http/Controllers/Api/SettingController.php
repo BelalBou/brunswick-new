@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class SettingController extends Controller
 {
@@ -18,54 +19,49 @@ class SettingController extends Controller
     public function index()
     {
         try {
-            \Log::info('Début de la récupération des settings');
+            Log::info('Début de la récupération des settings');
             
             $settings = Setting::all();
-            \Log::info('Settings récupérés de la base de données', ['count' => $settings->count()]);
-            
-            // Convertir les dates en jours de la semaine (0 = Lundi, 6 = Dimanche)
+            Log::info('Settings récupérés de la base de données', ['count' => $settings->count()]);
+
             $settings->transform(function ($setting) {
                 try {
-                    if ($setting->start_period) {
-                        $date = Carbon::parse($setting->start_period);
-                        // Assurer que le jour est entre 0 et 6
-                        $dayOfWeek = $date->dayOfWeek - 1;
-                        if ($dayOfWeek < 0) $dayOfWeek = 0;
-                        if ($dayOfWeek > 6) $dayOfWeek = 6;
-                        $setting->start_period = $dayOfWeek;
-                        \Log::info('Conversion start_period', [
-                            'original' => $setting->start_period,
-                            'converted' => $dayOfWeek
-                        ]);
-                    }
-                    if ($setting->end_period) {
-                        $date = Carbon::parse($setting->end_period);
-                        // Assurer que le jour est entre 0 et 6
-                        $dayOfWeek = $date->dayOfWeek - 1;
-                        if ($dayOfWeek < 0) $dayOfWeek = 0;
-                        if ($dayOfWeek > 6) $dayOfWeek = 6;
-                        $setting->end_period = $dayOfWeek;
-                        \Log::info('Conversion end_period', [
-                            'original' => $setting->end_period,
-                            'converted' => $dayOfWeek
-                        ]);
-                    }
+                    // Convertir les périodes en entiers
+                    $setting->start_period = (int) $setting->start_period;
+                    $setting->end_period = (int) $setting->end_period;
+
+                    // S'assurer que les valeurs sont dans la plage 0-6
+                    $setting->start_period = max(0, min(6, $setting->start_period));
+                    $setting->end_period = max(0, min(6, $setting->end_period));
+
+                    Log::info('Setting converti avec succès', [
+                        'id' => $setting->id,
+                        'time_limit' => $setting->time_limit,
+                        'start_period' => $setting->start_period,
+                        'end_period' => $setting->end_period
+                    ]);
+
+                    return $setting;
                 } catch (\Exception $e) {
-                    \Log::error('Erreur lors de la conversion des dates', [
+                    Log::error('Erreur lors du traitement du setting', [
                         'setting_id' => $setting->id,
                         'error' => $e->getMessage()
                     ]);
-                    // En cas d'erreur, définir des valeurs par défaut
+                    
+                    // En cas d'erreur, retourner des valeurs par défaut
                     $setting->start_period = 0;
-                    $setting->end_period = 6;
+                    $setting->end_period = 4;
+                    return $setting;
                 }
-                return $setting;
             });
 
-            \Log::info('Settings convertis avec succès');
+            Log::info('Settings convertis avec succès', [
+                'data' => $settings->toArray()
+            ]);
+            
             return response()->json($settings);
         } catch (\Exception $e) {
-            \Log::error('Erreur lors de la récupération des settings', [
+            Log::error('Erreur lors de la récupération des settings', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
@@ -133,41 +129,53 @@ class SettingController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'start_period' => 'required|integer|min:0|max:6',
-            'end_period' => 'required|integer|min:0|max:6',
-            'email_order_cc' => 'required|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(;[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})*$/',
-            'email_supplier_cc' => 'required|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(;[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})*$/',
-            'email_vendor_cc' => 'nullable|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(;[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})*$/'
-        ]);
-
-        if ($validator->fails()) {
-            \Log::error('Validation failed', ['errors' => $validator->errors()]);
-            return response()->json([
-                'error' => $validator->errors()
-            ], 400);
-        }
-
         try {
+            Log::info('Début de la mise à jour du setting', ['id' => $id, 'data' => $request->all()]);
+
             $setting = Setting::findOrFail($id);
-            
-            // Convertir les jours de la semaine en dates (0 = Lundi, 6 = Dimanche)
-            $startDate = now()->startOfWeek()->addDays($request->start_period);
-            $endDate = now()->startOfWeek()->addDays($request->end_period);
-            
-            $setting->update([
-                'start_period' => $startDate,
-                'end_period' => $endDate,
-                'email_order_cc' => $request->email_order_cc,
-                'email_supplier_cc' => $request->email_supplier_cc,
-                'email_vendor_cc' => $request->email_vendor_cc
+
+            $validated = $request->validate([
+                'time_limit' => 'required|date_format:H:i',
+                'start_period' => 'required|integer|min:0|max:6',
+                'end_period' => 'required|integer|min:0|max:6',
+                'email_order_cc' => 'required|string',
+                'email_supplier_cc' => 'required|string',
+                'email_vendor_cc' => 'required|string',
             ]);
 
-            return response()->json($setting);
+            // Convertir les jours en entiers
+            $startPeriod = (int) $validated['start_period'];
+            $endPeriod = (int) $validated['end_period'];
 
-        } catch (\Exception $e) {
-            \Log::error('Error updating setting', ['error' => $e->getMessage()]);
+            Log::info('Mise à jour du setting', [
+                'time_limit' => $validated['time_limit'],
+                'start_period' => $startPeriod,
+                'end_period' => $endPeriod
+            ]);
+
+            $setting->update([
+                'time_limit' => $validated['time_limit'],
+                'start_period' => $startPeriod,
+                'end_period' => $endPeriod,
+                'email_order_cc' => $validated['email_order_cc'],
+                'email_supplier_cc' => $validated['email_supplier_cc'],
+                'email_vendor_cc' => $validated['email_vendor_cc'],
+            ]);
+
+            Log::info('Setting mis à jour avec succès', ['setting' => $setting->toArray()]);
+
             return response()->json([
+                'message' => 'Setting mis à jour avec succès',
+                'setting' => $setting
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Erreur lors de la mise à jour du setting', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'message' => 'Erreur lors de la mise à jour du setting',
                 'error' => $e->getMessage()
             ], 500);
         }

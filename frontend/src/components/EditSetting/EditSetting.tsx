@@ -55,8 +55,8 @@ const EditSetting: React.FC<EditSettingProps> = ({
 }) => {
   const [formData, setFormData] = useState({
     timeLimit: initialTimeLimit,
-    startPeriod: initialStartPeriod,
-    endPeriod: initialEndPeriod,
+    startPeriod: Number(initialStartPeriod),
+    endPeriod: Number(initialEndPeriod),
     emailOrderCc: initialEmailOrderCc,
     emailSupplierCc: initialEmailSupplierCc,
     emailVendorCc: initialEmailVendorCc,
@@ -74,9 +74,9 @@ const EditSetting: React.FC<EditSettingProps> = ({
   };
 
   const handleSelectChange = (field: string) => (
-    event: SelectChangeEvent<number>
+    event: SelectChangeEvent<string>
   ) => {
-    const value = event.target.value;
+    const value = Number(event.target.value);
     setFormData((prev) => ({
       ...prev,
       [field]: value,
@@ -95,6 +95,8 @@ const EditSetting: React.FC<EditSettingProps> = ({
   const handleValidated = () => {
     const {
       timeLimit,
+      startPeriod,
+      endPeriod,
       emailOrderCc,
       emailSupplierCc,
       emailVendorCc,
@@ -102,6 +104,11 @@ const EditSetting: React.FC<EditSettingProps> = ({
 
     if (
       !timeLimit ||
+      startPeriod < 0 ||
+      startPeriod > 6 ||
+      endPeriod < 0 ||
+      endPeriod > 6 ||
+      endPeriod < startPeriod ||
       !handleValidateEmailAddress(emailOrderCc.split(";")) ||
       !handleValidateEmailAddress(emailSupplierCc.split(";")) ||
       !handleValidateEmailAddress(emailVendorCc.split(";"))
@@ -109,12 +116,12 @@ const EditSetting: React.FC<EditSettingProps> = ({
       setValidated(false);
     } else {
       onEdit(
-        formData.timeLimit,
-        Number(formData.startPeriod),
-        Number(formData.endPeriod),
-        formData.emailOrderCc,
-        formData.emailSupplierCc,
-        formData.emailVendorCc
+        timeLimit,
+        startPeriod,
+        endPeriod,
+        emailOrderCc,
+        emailSupplierCc,
+        emailVendorCc
       );
     }
   };
@@ -154,7 +161,7 @@ const EditSetting: React.FC<EditSettingProps> = ({
             <StyledFormControl fullWidth required>
               <InputLabel htmlFor="startPeriod">Jour de début</InputLabel>
               <Select
-                value={formData.startPeriod}
+                value={formData.startPeriod.toString()}
                 onChange={handleSelectChange("startPeriod")}
                 label="Jour de début"
                 inputProps={{
@@ -162,6 +169,7 @@ const EditSetting: React.FC<EditSettingProps> = ({
                   id: "startPeriod",
                   className: "capitalized-text",
                 }}
+                error={!validated && (formData.startPeriod < 0 || formData.startPeriod > 6)}
               >
                 {renderPeriodSelect()}
               </Select>
@@ -171,7 +179,7 @@ const EditSetting: React.FC<EditSettingProps> = ({
             <StyledFormControl fullWidth required>
               <InputLabel htmlFor="endPeriod">Jour de fin</InputLabel>
               <Select
-                value={formData.endPeriod}
+                value={formData.endPeriod.toString()}
                 onChange={handleSelectChange("endPeriod")}
                 label="Jour de fin"
                 inputProps={{
@@ -179,6 +187,7 @@ const EditSetting: React.FC<EditSettingProps> = ({
                   id: "endPeriod",
                   className: "capitalized-text",
                 }}
+                error={!validated && (formData.endPeriod < 0 || formData.endPeriod > 6 || formData.endPeriod < formData.startPeriod)}
               >
                 {renderPeriodSelect()}
               </Select>

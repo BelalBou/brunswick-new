@@ -32,8 +32,8 @@ function editSettingDispatch(res: any) {
 export const editSetting = (
   id: number,
   timeLimit: string,
-  startPeriod: string,
-  endPeriod: string,
+  startPeriod: number,
+  endPeriod: number,
   emailOrderCc: string,
   emailSupplierCc: string,
   emailVendorCc: string
@@ -45,8 +45,8 @@ export const editSetting = (
   try {
     const res = await axios.put(`/api/settings/${id}`, {
       time_limit: timeLimit,
-      start_period: parseInt(startPeriod),
-      end_period: parseInt(endPeriod),
+      start_period: startPeriod,
+      end_period: endPeriod,
       email_order_cc: emailOrderCc,
       email_supplier_cc: emailSupplierCc,
       email_vendor_cc: emailVendorCc
