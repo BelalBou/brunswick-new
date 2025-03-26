@@ -50,6 +50,7 @@ interface IProps {
   isListPending: boolean;
   userType: string;
   cartItems?: number;
+  orderItems?: number;
   search?: boolean;
   selected: number;
   title?: string;
@@ -173,6 +174,7 @@ function MenuBar({
   isListPending,
   userType,
   cartItems = 0,
+  orderItems = 0,
   search = false,
   selected,
   title = "",

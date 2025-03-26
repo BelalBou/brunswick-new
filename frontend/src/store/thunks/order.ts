@@ -49,7 +49,7 @@ export const addOrder = (userId: number, menus: Object[], date: string) => async
   dispatch(setAddError(""));
 
   try {
-    const res = await axios.post(`/api/orders/add/`, { userId, menus, date });
+    const res = await axios.post(`/api/orders/`, { userId, menus, date });
     dispatch(addOrderDispatch(res));
   } catch (err: any) {
     dispatch(setAddError(String(err)));

@@ -5,10 +5,14 @@ import ISetting from "../../interfaces/ISetting";
 
 interface SettingState {
   settingList: ISetting[];
+  is_away: boolean;
+  serverTime: string;
 }
 
 const initialState: SettingState = {
-  settingList: []
+  settingList: [],
+  is_away: false,
+  serverTime: ""
 };
 
 const settingSlice = createSlice({
