@@ -138,7 +138,6 @@ const EditSetting: React.FC<EditSettingProps> = ({
           value={formData.timeLimit}
           onChange={handleTextChange("timeLimit")}
           autoFocus
-          defaultValue="11:00"
           sx={{ m: 1 }}
           InputLabelProps={{
             shrink: true,

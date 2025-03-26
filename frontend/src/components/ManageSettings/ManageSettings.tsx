@@ -186,8 +186,8 @@ const ManageSettings: React.FC<ManageSettingsProps> = ({
   ) => {
     setEditId(id);
     setEditTimeLimit(timeLimit);
-    setEditStartPeriod(startPeriod);
-    setEditEndPeriod(endPeriod);
+    setEditStartPeriod(Number(startPeriod) >= 0 && Number(startPeriod) <= 6 ? Number(startPeriod) : 0);
+    setEditEndPeriod(Number(endPeriod) >= 0 && Number(endPeriod) <= 6 ? Number(endPeriod) : 6);
     setEditEmailOrderCc(emailOrderCc);
     setEditEmailSupplierCc(emailSupplierCc);
     setEditEmailVendorCc(emailVendorCc);

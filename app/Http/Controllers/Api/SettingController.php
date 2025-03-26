@@ -28,18 +28,26 @@ class SettingController extends Controller
                 try {
                     if ($setting->start_period) {
                         $date = Carbon::parse($setting->start_period);
-                        $setting->start_period = $date->dayOfWeek - 1; // -1 car Carbon commence à 1 (Lundi)
+                        // Assurer que le jour est entre 0 et 6
+                        $dayOfWeek = $date->dayOfWeek - 1;
+                        if ($dayOfWeek < 0) $dayOfWeek = 0;
+                        if ($dayOfWeek > 6) $dayOfWeek = 6;
+                        $setting->start_period = $dayOfWeek;
                         \Log::info('Conversion start_period', [
                             'original' => $setting->start_period,
-                            'converted' => $date->dayOfWeek - 1
+                            'converted' => $dayOfWeek
                         ]);
                     }
                     if ($setting->end_period) {
                         $date = Carbon::parse($setting->end_period);
-                        $setting->end_period = $date->dayOfWeek - 1; // -1 car Carbon commence à 1 (Lundi)
+                        // Assurer que le jour est entre 0 et 6
+                        $dayOfWeek = $date->dayOfWeek - 1;
+                        if ($dayOfWeek < 0) $dayOfWeek = 0;
+                        if ($dayOfWeek > 6) $dayOfWeek = 6;
+                        $setting->end_period = $dayOfWeek;
                         \Log::info('Conversion end_period', [
                             'original' => $setting->end_period,
-                            'converted' => $date->dayOfWeek - 1
+                            'converted' => $dayOfWeek
                         ]);
                     }
                 } catch (\Exception $e) {
@@ -47,6 +55,9 @@ class SettingController extends Controller
                         'setting_id' => $setting->id,
                         'error' => $e->getMessage()
                     ]);
+                    // En cas d'erreur, définir des valeurs par défaut
+                    $setting->start_period = 0;
+                    $setting->end_period = 6;
                 }
                 return $setting;
             });
@@ -123,12 +134,11 @@ class SettingController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'time_limit' => 'required|string',
             'start_period' => 'required|integer|min:0|max:6',
             'end_period' => 'required|integer|min:0|max:6',
-            'email_order_cc' => 'required|email',
-            'email_supplier_cc' => 'required|email',
-            'email_vendor_cc' => 'nullable|email'
+            'email_order_cc' => 'required|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(;[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})*$/',
+            'email_supplier_cc' => 'required|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(;[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})*$/',
+            'email_vendor_cc' => 'nullable|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(;[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})*$/'
         ]);
 
         if ($validator->fails()) {
@@ -146,7 +156,6 @@ class SettingController extends Controller
             $endDate = now()->startOfWeek()->addDays($request->end_period);
             
             $setting->update([
-                'time_limit' => $request->time_limit,
                 'start_period' => $startDate,
                 'end_period' => $endDate,
                 'email_order_cc' => $request->email_order_cc,
