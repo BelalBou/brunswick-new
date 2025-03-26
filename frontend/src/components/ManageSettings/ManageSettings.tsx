@@ -65,7 +65,7 @@ const ManageSettings: React.FC<ManageSettingsProps> = ({
   const [openEdit, setOpenEdit] = useState(false);
   const [edited, setEdited] = useState(false);
   const [editId, setEditId] = useState(-1);
-  const [editTimeLimit, setEditTimeLimit] = useState("11:00:00");
+  const [editTimeLimit, setEditTimeLimit] = useState("11:00");
   const [editStartPeriod, setEditStartPeriod] = useState(0);
   const [editEndPeriod, setEditEndPeriod] = useState(0);
   const [editEmailOrderCc, setEditEmailOrderCc] = useState("");
@@ -143,34 +143,40 @@ const ManageSettings: React.FC<ManageSettingsProps> = ({
 
   const handleTableRows = () => {
     if (settingList && settingList.length > 0) {
-      return settingList.map((setting: ISetting) => ({
-        timeLimit: moment(setting.time_limit, "HH:mm:ss").format("HH:mm"),
-        startPeriod: moment.weekdays(true)[parseInt(setting.start_period)],
-        endPeriod: moment.weekdays(true)[parseInt(setting.end_period)],
-        emailOrderCc: setting.email_order_cc,
-        emailSupplierCc: setting.email_supplier_cc,
-        emailVendorCc: setting.email_vendor_cc,
-        action: (
-          <Tooltip title="Éditer ce paramètre">
-            <IconButton
-              color="primary"
-              onClick={() =>
-                handleOpenEdit(
-                  setting.id,
-                  setting.time_limit,
-                  parseInt(setting.start_period),
-                  parseInt(setting.end_period),
-                  setting.email_order_cc,
-                  setting.email_supplier_cc,
-                  setting.email_vendor_cc
-                )
-              }
-            >
-              <EditIcon />
-            </IconButton>
-          </Tooltip>
-        ),
-      }));
+      return settingList.map((setting: ISetting) => {
+        // Convertir les dates en jours de la semaine (0-6)
+        const startDay = moment(setting.start_period).day();
+        const endDay = moment(setting.end_period).day();
+        
+        return {
+          timeLimit: setting.time_limit || "11:00",
+          startPeriod: moment.weekdays(true)[startDay],
+          endPeriod: moment.weekdays(true)[endDay],
+          emailOrderCc: setting.email_order_cc,
+          emailSupplierCc: setting.email_supplier_cc,
+          emailVendorCc: setting.email_vendor_cc,
+          action: (
+            <Tooltip title="Éditer ce paramètre">
+              <IconButton
+                color="primary"
+                onClick={() =>
+                  handleOpenEdit(
+                    setting.id,
+                    setting.time_limit || "11:00",
+                    startDay,
+                    endDay,
+                    setting.email_order_cc,
+                    setting.email_supplier_cc,
+                    setting.email_vendor_cc
+                  )
+                }
+              >
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
+          ),
+        };
+      });
     }
     return [];
   };

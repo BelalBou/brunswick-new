@@ -44,6 +44,7 @@ export const editSetting = (
 
   try {
     const res = await axios.put(`/api/settings/${id}`, {
+      time_limit: timeLimit,
       start_period: parseInt(startPeriod),
       end_period: parseInt(endPeriod),
       email_order_cc: emailOrderCc,

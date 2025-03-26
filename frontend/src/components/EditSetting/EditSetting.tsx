@@ -69,7 +69,7 @@ const EditSetting: React.FC<EditSettingProps> = ({
     const value = event.target.value;
     setFormData((prev) => ({
       ...prev,
-      [field]: value.toString().trim().toLowerCase(),
+      [field]: value.toString().trim(),
     }));
   };
 
