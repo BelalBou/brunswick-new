@@ -116,7 +116,8 @@ const Cart: React.FC<CartProps> = ({
 
   useEffect(() => {
     if (userToken) {
-      axios.defaults.headers.common["authorization"] = `Bearer ${userToken}`;
+      axios.defaults.headers.common["Authorization"] = `Bearer ${userToken}`;
+      axios.defaults.withCredentials = true;
       refresh();
     }
     if (userLanguage) {
@@ -174,7 +175,7 @@ const Cart: React.FC<CartProps> = ({
   const handleChangeSelected = (selected: number) => {
     actions.setSelected(selected);
     localStorage.setItem("selected", selected.toString());
-    actions.getServerTime();
+    getServerTime();
   };
 
   const handleEditShoppingCart = (cart: ICart, quantity: number, remark: string) => {
